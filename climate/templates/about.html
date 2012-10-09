@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% block title_extra %} - about {% endblock %}
+
+{% block content %}
+<h3 class="ui-widget-header ui-corner-all" style="padding: 0.5em;">Aims</h3>
+<div class="textblock">
+	<p>
+	    CLI-mate was developed at the Department of Human Genetics, Leiden University Medical Center (LUMC). 
+	    Its aim is to facilitate developers in creating user-friendly interfaces for a command line tool. 
+	</p>
+	<p>
+	    In the agile development environment of bioinformatics, many command line tools are created quickly to fill in gaps between complex information processes. 
+	    A command line interface (CLI) is sometimes sufficient for the task, but it limits adoption by a broader audience. As such, it's often necessary for the developer to
+	    create a CLI wrapper that provides a more user friendly interface. CLI-mate was developed to systematize and expedite this very time consuming process.
+	</p>
+	<p>
+	    To generate an interface from a command line tool, we need to create a complete usage definition using the following properties:
+	    <ul>
+			<li>argument</li>
+			<li>value type</li>
+			<li>default value</li>
+			<li>dependency</li>
+			<li>repeatability</li>
+		</ul>
+		We also need to add meta properties in the tool definition, such as:
+		<ul>
+			<li>name</li>
+			<li>label</li>
+			<li>help manual</li>
+			<li>display*</li>
+			<li>property bag**</li>
+		</ul>
+	</p>
+    <p>
+		* When a parameter's display is marked as "hide", it is not to say that this parameter is no longer "optional". 
+		Rather, this is to provide a mechanism to split a single program into multiple sub programs. 
+		In this way, parameters unrelated to this sub routine can be eliminated from the defintion, reducing the complexity of the generated interface.
+	</p>
+	<p>
+		** Property bag was created to store interface specific properties of a parameter. 
+	    These properties may not be generalized. 
+		For example, Galaxy uses loc files to store mapping information. The way Galaxy runtime retrieved that information has 
+		nothing to do with the command line itself. However, to generate a functionally rich galaxy interface, 
+		we need to store these meta properties in the tool definition. We chose the property bag (dictionary structure) 
+		because it gives us the most flexibility. 
+	</p>
+	<p>
+        This definition is stored in the RDF/turtle format. The command line tool is modeled using the <a href="http://www.daml.org/services/owl-s/1.1/Process.owl">Process ontology</a>.
+        To adapt for our purposes, we extended the Process ontology with a Command Line Interface Ontology, which will be released soon. 
+    <p>
+    <p>
+        Once we have the command line program definition in RDF/turtle format, we can use it to generated targetted interfaces using predefined templates.
+    </p>
+</div>
+<div class="clear" ></div>
+
+<h3 class="ui-widget-header ui-corner-all" style="padding: 0.5em;"><a name="galaxy">Property bag</a></h3>
+<div class="textblock">
+    <h3 class="description">Adoption with Galaxy</h3>
+	<p>
+		<a href="http://galaxy.psu.edu/">Galaxy</a> is used as a case study to test the design and the usability of CLI-mate. As a result, the beta release of this 
+		web service includes two Galaxy templates. To use the default Galaxy templates, you can use the following meta properties in the property bag.
+		
+		<table class="general" width="700" cellspacing="0" border="1" cellpadding="5">
+		   <thead class="ui-widget-header ui-corner-all">
+		       <tr>
+		           <th scope="col" width="100">Property Name</th>
+		           <th>Property Value</th>
+		       </tr>
+	        </thead>
+	        <tbody>
+			    <tr>
+			        <td>from_loc</td>
+			        <td>Indicate the value of a parameter is from a .loc file. Use one of the following: 
+			             <ul>
+			                 <li>data_table: <em>The value of a parameter is from a data table. Use this option to generate dynamic dropdown menu in galaxy. 
+			                     The parameter type must be "select".</em></li>
+			                 <li>dbkey: <em>The value of a parameter is a cell in the dbkey column of a data table. This property should be used with loc_id_filter.</em></li>
+			                 <li>path: <em>The value of the parameter is a cell in the path column of a data table. This property should be used with loc_id_filter.</em></li>
+			             </ul>
+			        </td>
+			    </tr>
+			    <tr>
+			        <td>loc_id_filter</td>
+			        <td>The id column of the datatable. The value should be the name of a parameter.</td>
+			    </tr>
+			</tbody>
+		</table>
+		<br/>
+	</p>
+    <h3 class="description">Adoption with MOTEUR</h3>
+    <p>
+        There are two templates created for the <a href="http://modalis.i3s.unice.fr/softwares/moteur/start">MOTEUR</a> system. 
+        You can use the following meta properties for gasw.xml and gwendia.xml templates.
+        
+        <table class="general" width="700" cellspacing="0" border="1" cellpadding="5">
+           <thead class="ui-widget-header ui-corner-all">
+               <tr>
+                   <th scope="col" width="100">Property Name</th>
+                   <th>Property Value</th>
+               </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>access_type</td>
+                    <td>Access type on the grid. The value should be either LFN or URL.</td>
+                </tr>
+                <tr>
+                    <td>access_location</td>
+                    <td>The location where the resource (such as input file, executables) can be accesseed. Should always be used with access_type.</td>
+                </tr>
+                <tr>
+                    <td>dir_template</td>
+                    <td>The directory template used by a output/stdout/stderr paramter. The value should be the name of an input parameter.</td>
+                </tr>
+            </tbody>
+        </table>
+    </p>
+</div>
+<div class="clear" ></div>
+
+<h3 class="ui-widget-header ui-corner-all" style="padding: 0.5em;"><a name="demo">Demos</a></h3>
+<div class="textblock">
+    <p>See how you can make your first Galaxy wrapper in 3 minutes.</p>
+    <iframe src="http://player.vimeo.com/video/30186661?title=0&amp;byline=0&amp;portrait=0" width="400" height="300" frameborder="0" webkitAllowFullScreen allowFullScreen></iframe>
+    </div>
+<div class="clear" ></div>
+
+<h3 class="ui-widget-header ui-corner-all" style="padding: 0.5em;"><a name="contact">Contact Us</a></h3>
+<div class="textblock">
+    <p>
+        Zuotian Tatum <br/>
+        Scientific Programmer <br/>
+        Email: z dot tatum at lumc dot nl
+    </p>
+    <p>
+        Please report bugs at <a href="https://humgenprojects.lumc.nl/trac/cli-mate">here</a>.
+    </p>
+</div>
+{% endblock %}

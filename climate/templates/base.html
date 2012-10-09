@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/base.css') }}" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui-1.8.17.custom.css') }}" type="text/css" media="all" />
+        <link rel="shortcut icon" href="{{ url_for('static', filename='images/interface.ico') }}" type="image/x-icon" />
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/base.js') }}"></script>
+        {% block head_extra %}{% endblock %}
+        <title>CLI-mate {% block title_extra %}{% endblock %}</title>
+        
+        <!--[if IE]>
+            <style type="text/css">pre,code {padding-bottom:16px;overflow:visible;overflow-x:auto;overflow-y:hidden}</style>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="page">
+            <div class="header">
+                <div id="menu">
+                    <ul>
+                        {%- for menu_item in menu -%}
+                            <li>
+                                <a href="{{url_for(menu_item[1])}}"
+                                   {{ 'class="current"' if current_page == menu_item[1] }}>{{menu_item[0]}}</a>&nbsp|&nbsp
+                            </li>
+                        {%- endfor -%}
+                    </ul>
+                </div>
+                <div class="header-content">
+                    <img src="{{ url_for('static', filename='images/interface.png') }}" alt="" width="80px" align="left" style="margin-right: 1em;"/>
+                    <h1>CLI-mate</h1>  
+
+                    <div>Interface generator for command line programs</div>
+                </div>
+            </div>
+            <div class="align-right description">Version {{version}}</div>
+
+
+            <!--[if lt IE 8]>
+                <h1 class="ui-state-error">This beta release doesn't not suport IE6 and IE7. Please use a different browser.</h1>
+            <![endif]-->
+            
+            <div id="content" class="content">
+                {% if error -%}
+                    <div class="ui-state-error ui-corner-all">{{ error }}</div>
+                {%- endif %}
+                {% block content %}
+                {% endblock %}
+            </div>
+            <div class="clear" ></div>
+            
+            <div class="footer">
+                <img src="{{ url_for('static', filename='images/Logo_LUMC.jpg') }}" width="300px" align="right"/>
+                <p>Center for <br>Human and Clinical Genetics</p>
+            </div>
+        </div>
+        <div class="footnote">
+            <p>
+                Please note that this service is in beta release and for testing purposes ONLY. <br/>
+                Designed by Zuotian Tatum and Jeroen F. J. Laros. Developed by Zuotian Tatum.
+            </p>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,95 @@
+/*********************** layout ******************************/
+body {
+    font-size: 13px;
+    font-family: Trebuchet MS, sans-serif;
+    height: auto;
+    background-color: #eee;
+}
+div.page {
+    width: 960px;
+    margin: 0 auto;
+    border: solid #CFC0A6;
+    background-color: #FFFFFF;
+    padding: 1em;
+}
+
+div.header {
+    overflow:auto;
+    position: relative;
+    border-bottom: 2px solid #CFC0A6;
+    color: #283339;
+    height: 120px;
+    margin-bottom: 0.5em;
+}
+
+div.content {
+    margin: 1em;
+    padding: 1.5em 0;
+    min-height: 400px;
+}
+
+div.footer {
+    border-top: 2px solid #CFC0A6;
+    vertical-align: baseline;
+    padding: 1em;
+}
+
+p {
+    padding: 3px;
+}
+
+form input, form select, form textarea {
+    padding: 3px;
+    color: #333333;
+    border: 1px solid #ccc;
+    background-color:#fff;
+}
+
+fieldset {
+    border: 1px solid #999;
+}
+
+/*********************** style classes ******************************/
+.hide { display: None; }
+.align-left { float: left; }
+.align-right { float: right; }
+.clear { padding: 1em; }
+.contentbox { width: 100%; }
+
+/*********************** default fonts ******************************/
+input, textarea { font-family: Trebuchet MS, sans-serif; }
+input.blur { color: #999; }
+pre { font-family: consolas, inconsolata, monospace; }
+.description { font-style: italic; color: #7E9797; }
+.footnote { color: #7E9797; text-align: center; }
+/* override .ui-widget value */
+body .ui-widget { font-size: 1em; }
+div.dialog { font-size: 12px; }
+legend { font-size: 1em; }
+h1 { font-size: 3em; }
+
+
+/*********************** header area ******************************/
+div.header .ui-widget-header { padding: 10px 0 0 10px; }
+
+/*********************** menu area *******************************/
+#menu { position: absolute; display:block; float:right; width: 98%; }
+#menu ul { display:block; list-style: none; float: right }
+#menu ul li { display:block; float:right; color: #7E9797 }
+#menu ul li a { display: block; float: left; text-decoration: none; color: #7E9797; }
+#menu ul li a.current { color: #283339; }
+#menu ul li a:hover { color: #283339; }
+
+/*********************** footer area ******************************/
+div.footer p { font-family: serif; font-size: 30px; font-variant:small-caps; margin-bottom: 0; color: #1F3D7A; }
+
+/*********************** tables ***********************************/
+table { border-collapse: collapse; }
+td { border: solid 1px #749090 }
+
+/*********************** content area ******************************/
+div.content .textblock { padding: 0 1em; line-height: 1.5em; }
+div.content fieldset table { border-spacing: 0.5em; border-collapse: separate; padding-left: 3em;}
+div.content fieldset table td { border: none; }
+div.content fieldset table th { width: 150px; text-align: left; font-weight: normal; }
+

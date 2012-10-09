@@ -1,0 +1,6 @@
+Don't forget to regenerate secret key for the application at deployment
+
+See _http://flask.pocoo.org/docs/quickstart/#sessions
+
+>>> import os
+>>> os.urandom(24)
