@@ -1,0 +1,49 @@
+<div id="parameter-info" class="inner-content">
+    <div class="ui-widget ui-state-highlight ui-corner-all">
+        <p><span class="ui-icon ui-icon-info"></span>
+            Parameter name cannot contain <strong>white space</strong> and following characters: <strong>- . ( ) , ; $</strong>
+        </p>
+    </div>
+    <p></p>
+    <div id="parameters">
+            <div class="row" id="row_">
+            <h4 class="row-header">
+                <a class="row-title" href="#">title</a>
+            </h4>
+            <div class="row-inner" id="">
+                <div class="left">
+                    {% for field_name in parameter_form.field_set['left'] %}
+                        <p>{{ parameter_form[field_name].label }}{{ parameter_form[field_name] }}</p>
+                    {% endfor  %}
+                </div>
+                <div class="right">
+                    {% for field_name in parameter_form.field_set['right'] %}
+                        <p>{{ parameter_form[field_name].label }}{{ parameter_form[field_name] }}</p>
+                    {% endfor  %}
+                </div>
+                <div class="full hide" >
+                    {% set close = True %}
+                    {% for field_name in parameter_form.field_set['advanced'] %}
+                        <p>{{ parameter_form[field_name].label }}{{ parameter_form[field_name] }}</p>
+                    {% endfor %}
+
+                    <div class="dependencies">
+                    </div>
+                </div>
+                <p style="clear:both;">
+                    <button class="advancedToggle" class="alignright" >
+                        <span class="ui-button-text">Show advanced options</span>
+                    </button>
+                    <button class="deleteParam" class="alignright" >
+                        <span class="ui-button-text">Delete</span>
+                    </button>
+                </p>
+            </div>
+            </div>
+    </div>
+    <p><br/>
+        <button id="addParam">
+            <span class="ui-button-text">Add Parameter</span>
+        </button>
+    </p>
+</div>

@@ -1,0 +1,17 @@
+<div id="general-info" class="inner-content">
+    <div class="left">
+        {% for field in form if field.type == 'TextField' -%}
+            <p>{{ field.label }}{{ field(class='gen_info') }}</p>
+        {%- endfor %}
+    </div>
+    <div class="right">
+        <p>Enter the help manual below.
+            <span class="ui-icon ui-icon-info tip-icon helptip inline-icon"></span>
+        </p>
+        <div class="hide" id="helptip">If this help manual is for Galaxy, it needs to be written in
+            <a href="http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html">reStructuredText</a> format.
+        </div>
+
+        {{ form.help(rows=8, cols=50, class='gen_info') }}
+    </div>
+</div>

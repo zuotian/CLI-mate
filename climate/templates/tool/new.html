@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block head_extra %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/core.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/highlight.css') }}" />
+    <script type="text/javascript" src="{{ url_for('static', filename='js/tooltipsy.min.js') }}"></script>
+    <script>
+    (function(){
+        // for tooltip style
+        var tooltip_css = {
+            'padding': '10px',
+            'max-width': '300px',
+            'color': '#303030',
+            'background-color': 'white',
+            'border': '1px solid #deca7e',
+            '-moz-box-shadow': '0 0 10px rgba(0, 0, 0, .5)',
+            '-webkit-box-shadow': '0 0 10px rgba(0, 0, 0, .5)',
+            'box-shadow': '0 0 10px rgba(0, 0, 0, .5)',
+            'text-shadow': 'none'
+        };
+
+        $(document).ready(function() {
+            $('#tabs').tabs();
+
+            $('.helptip').tooltipsy({
+                alignTo: 'cursor',
+                offset: [-300, 0],
+                content : function() { return $('div#helptip').html(); },
+                css: tooltip_css
+            });
+
+            $("#parameters")
+                    .accordion("destroy")
+                    .accordion({
+                        header: "> div > h4",
+                        collapsible: true,
+                        autoHeight: false})
+                    .sortable({
+                        axis: "y",
+                        handle: "h4",
+                        stop: function() {
+                            stop = true;
+                            refreshOrder();
+                            // nasty workaround from ie8
+                            $('body').css("display", "none");
+                            $('body').css("display", "block");
+                        }});
+
+            $("#parameters h4").click(function(event) {
+                if (stop) {
+                    event.stopImmediatePropagation();
+                    event.preventDefault();
+                    stop = false;
+                }
+            });
+
+        });
+    })();
+    </script>
+{% endblock %}
+
+{% block content %}
+    <form id="main" method="post">
+        <div id="formContent" class="{{formStatus}}">
+            <div id="tabs">
+                <ul>
+                    <li><a href="#general-info">General Information</a></li>
+                    <li><a href="#parameter-info">Parameters</a></li>
+                    <li><a href="#runtime-info">Runtime Requirments</a></li>
+                </ul>
+
+                {% include 'tool/general_information.html' %}
+                {% include 'tool/parameter_information.html' %}
+             </div>
+        </div>
+    </form>
+
+{% endblock %}

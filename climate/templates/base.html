@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html>
 <html>
     <head>
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/base.css') }}" />
@@ -7,6 +7,16 @@
         <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/jquery-ui.min.js"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='js/base.js') }}"></script>
+
+        <script>
+            (function(){
+                $(document).ready(function() {
+                    initFileUploads();
+                    $('input:submit, button').button();
+                });
+            })();
+        </script>
+
         {% block head_extra %}{% endblock %}
         <title>CLI-mate {% block title_extra %}{% endblock %}</title>
         
@@ -14,6 +24,7 @@
             <style type="text/css">pre,code {padding-bottom:16px;overflow:visible;overflow-x:auto;overflow-y:hidden}</style>
         <![endif]-->
     </head>
+
     <body>
         <div class="page">
             <div class="header">
