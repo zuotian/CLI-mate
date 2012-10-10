@@ -7,8 +7,8 @@ from flask import render_template
 from flask.ext.mongoengine.wtf import model_form
 
 from climate import app
-from .forms import ToolForm, ToolUploadForm
-from .models import Tool, Parameter
+from .forms import ToolForm, ToolUploadForm, ArgumentForm
+from .models import Tool, Argument
 
 @app.context_processor
 def view_context():
@@ -28,15 +28,15 @@ def define_upload():
 
 @app.route('/define')
 def define():
-    form = model_form(Parameter)
+    form = model_form(Argument)
     return render_template('define.html',  form=form, data={})
 
 @app.route('/define/new')
 def define_new():
-    tool = Tool(name='test')
-    tool.parameters.append(Parameter(name='parameter1'))
+    # add a placeholder argument, so that arguments tab is not empty.
+    tool = Tool(name='test', arguments=[Argument(name='Argument1')])
     form = ToolForm(csrf_enabled=True, obj=tool)
-    return render_template('tool/new.html', form=form, data={})
+    return render_template('tool/define.html', form=form, empty_argument_form=ArgumentForm())
 
 @app.route('/generate')
 def generate():

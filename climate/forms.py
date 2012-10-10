@@ -6,12 +6,13 @@
 
 from flask.ext.mongoengine.wtf import model_form
 from flask.ext.wtf import (Form, FileField, SubmitField, FieldList, FormField)
-from climate.models import (Tool, Parameter, ToolRequirement)
+from climate.models import (Tool, Argument, ToolRequirement)
 
-ParameterFormBase = model_form(Parameter, field_args={
+ArgumentFormBase = model_form(Argument, field_args={
+    'arg_type': {'label': 'Type'},
     'name': {'label' : 'Name *'},
-    'arg': {'label': "Argument (short)"},
-    'arg_long': {'label': "Argument (long)"},
+    'prefix': {'label': "Prefix (short)"},
+    'prefix_long': {'label': "Prefix (long)"},
     'value': {'label': "Default value"},
     'choices': {'label': "Restrict argument values (use \",\" to separate values)"},
     'label': {'label': "Label (short description)"},
@@ -20,9 +21,9 @@ ParameterFormBase = model_form(Parameter, field_args={
     'max_occurrence': {'description': "1 (use ? for unlimited)"}
 })
 
-class ParameterForm(ParameterFormBase):
+class ArgumentForm(ArgumentFormBase):
     field_set = {
-        'left' : ('type', 'name', 'arg', 'arg_long', 'value', 'format', 'rank'),
+        'left' : ('arg_type', 'name', 'prefix', 'prefix_long', 'value', 'format', 'rank'),
         'right': ('choices', 'label', 'description'),
         'advanced': ('display', 'min_occurrence', 'max_occurrence')
     }
@@ -30,10 +31,11 @@ class ParameterForm(ParameterFormBase):
 ToolRequirementForm = model_form(ToolRequirement, field_args={
     'type': {'label': "Requirement type"},
     'name': {'label': "Requirement name"},
-    'location': {'label': "LFN location"}
+    'location': {'label': "LFN location"},
+    'os': {'label': "OS"}
 })
 
-ToolFormBase = model_form(Tool, exclude=('parameters', 'requirements'), field_args={
+ToolFormBase = model_form(Tool, exclude=('arguments', 'requirements'), field_args={
     'name': {'label': "Name *"},
     'binary': {'label': "Command *"},
     'email': {'label': "Owner Email"},
@@ -44,7 +46,7 @@ ToolFormBase = model_form(Tool, exclude=('parameters', 'requirements'), field_ar
 class ToolForm(ToolFormBase):
 
     requirements = FieldList(FormField(ToolRequirementForm))
-    parameters = FieldList(FormField(ParameterForm))
+    arguments = FieldList(FormField(ArgumentForm))
 
     field_set = {
         'general': ('name', 'binary', 'description', 'owner', 'email', 'version', 'help'),

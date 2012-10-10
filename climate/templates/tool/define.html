@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block head_extra %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/core.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/highlight.css') }}" />
+    <script type="text/javascript" src="{{ url_for('static', filename='js/tooltipsy.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/define.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+    <form id="main" method="post">
+        <div id="formContent" class="{{formStatus}}">
+            <div id="tabs">
+                <ul>
+                    <li><a href="#general-info">General Information</a></li>
+                    <li><a href="#argument-info">Arguments</a></li>
+                    <li><a href="#runtime-info">Runtime Requirements</a></li>
+                </ul>
+
+                {% include 'tool/general_information.html' %}
+                {% include 'tool/arguments_information.html' %}
+                {% include 'tool/runtime_information.html' %}
+             </div>
+        </div>
+    </form>
+
+{% endblock %}

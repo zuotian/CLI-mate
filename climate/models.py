@@ -7,12 +7,12 @@
 from climate import db
 import datetime
 
-class Parameter(db.EmbeddedDocument):
+class Argument(db.EmbeddedDocument):
     name = db.StringField(required=True, max_length=50)
-    type = db.StringField(required=True, max_length=50,
-                          choices=[(x, x) for x in ["None", "integer", "float", "string", "input", "output", "stdin", "stdout", "stderr"]])
-    arg = db.StringField(max_length=2)
-    arg_long = db.StringField(max_length=50)
+    arg_type = db.StringField(required=True, max_length=50,
+                              choices=[(x, x) for x in ["None", "integer", "float", "string", "input", "output", "stdin", "stdout", "stderr"]])
+    prefix = db.StringField(max_length=2)
+    prefix_long = db.StringField(max_length=50)
     value = db.StringField(max_length=50)
     format = db.StringField(max_length=50)
     rank = db.IntField()
@@ -22,8 +22,8 @@ class Parameter(db.EmbeddedDocument):
     description = db.StringField(max_length=50)
 
     display = db.StringField(choices=[(x, x) for x in ["show", "hide", "show in advanced"]])
-    min_occurrence = db.StringField()
-    max_occurrence = db.StringField()
+    min_occurrence = db.StringField(max_length=3)
+    max_occurrence = db.StringField(max_length=50)
 
 class ToolRequirement(db.EmbeddedDocument):
     type = db.StringField(choices=[(x, x) for x in ["binary", "python-module"]])
@@ -46,7 +46,7 @@ class Tool(db.Document):
     grid_access_type = db.StringField(choices=[(x, x) for x in ["-", "LFN", "URL"]])
     grid_access_location = db.StringField(max_length=250)
 
-    parameters = db.ListField(db.EmbeddedDocumentField('Parameter'))
+    arguments = db.ListField(db.EmbeddedDocumentField('Argument'))
     requirements = db.ListField(db.EmbeddedDocumentField('ToolRequirement'))
 
 ########################################################################################################################

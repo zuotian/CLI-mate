@@ -1,0 +1,32 @@
+{# context should pass in the row id and an Argument a_form (bound or unbound). #}
+
+<div class="row" id="{% if a_form.type == 'FormField' %}row_{{ id }}{% else %}argument-empty{% endif %}">
+    <h4 class="row-header">
+        <a class="row-title" href="#">{{ a_form['name'].data }}</a>
+    </h4>
+    <div class="row-inner" id="{{ id }}">
+        <div class="left">
+            {% for field_name in a_form.field_set['left'] %}
+                <p class="p_{{ field_name }}">{{ a_form[field_name].label }}{{ a_form[field_name] }}</p>
+            {% endfor  %}
+        </div>
+        <div class="right">
+            {% for field_name in a_form.field_set['right'] %}
+                <p class="p_{{ field_name }}">{{ a_form[field_name].label }}{{ a_form[field_name] }}</p>
+            {% endfor  %}
+        </div>
+        <div class="full hide" >
+            {% set close = True %}
+            {% for field_name in a_form.field_set['advanced'] %}
+                <p class="p_{{ field_name }}">{{ a_form[field_name].label }}{{ a_form[field_name] }}</p>
+            {% endfor %}
+
+            <div class="dependencies">
+            </div>
+        </div>
+        <p style="clear:both;">
+            <button class="advancedToggle" class="alignright" >Show advanced options</button>
+            <button class="deleteArg" class="alignright" >Delete</button>
+        </p>
+    </div>
+</div>

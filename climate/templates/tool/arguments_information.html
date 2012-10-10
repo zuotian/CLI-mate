@@ -1,0 +1,21 @@
+<div id="argument-info" class="inner-content">
+    <div class="ui-widget ui-state-highlight ui-corner-all">
+        <p><span class="ui-icon ui-icon-info"></span>
+            Argument name cannot contain <strong>white space</strong> and following characters: <strong>- . ( ) , ; $</strong>
+        </p>
+    </div>
+    <p></p>
+    <div id="arguments">
+        {% for a_form in form.arguments  %}
+            {% set id = loop.index %}
+            {% include 'tool/argument_row.html' %}
+        {% endfor %}
+
+        {# print out an empty form for adding new arguments #}
+        {% set a_form = empty_argument_form %}
+        {% include 'tool/argument_row.html' %}
+    </div>
+    <p><br/>
+        <button id="addArg">Add Argument</button>
+    </p>
+</div>

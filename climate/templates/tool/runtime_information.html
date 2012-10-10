@@ -1,0 +1,12 @@
+<div id="runtime-info" class="inner-content">
+    <div class="full">
+        {% for field_name in form.field_set['runtime'] -%}
+            <p>{{ form[field_name].label }}{{ form[field_name] }}</p>
+        {%- endfor %}
+    </div>
+    <div id="requirements">
+        <label>Requirements:</label><br>
+        <div>
+        </div>
+    </div>
+</div>
