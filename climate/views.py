@@ -4,9 +4,11 @@
 @contact: z.tatum@lumc.nl
 """
 from flask import render_template
+from flask.ext.mongoengine.wtf import model_form
 
 from climate import app
-from .forms import ToolForm, ToolUploadForm, ParameterForm
+from .forms import ToolForm, ToolUploadForm
+from .models import Tool, Parameter
 
 @app.context_processor
 def view_context():
@@ -26,14 +28,15 @@ def define_upload():
 
 @app.route('/define')
 def define():
-    form = ToolForm(csrf_enabled=True)
+    form = model_form(Parameter)
     return render_template('define.html',  form=form, data={})
 
 @app.route('/define/new')
 def define_new():
-    form = ToolForm(csrf_enabled=True)
-    parameter_form = ParameterForm()
-    return render_template('tool/new.html', form=form, parameter_form=parameter_form, data={})
+    tool = Tool(name='test')
+    tool.parameters.append(Parameter(name='parameter1'))
+    form = ToolForm(csrf_enabled=True, obj=tool)
+    return render_template('tool/new.html', form=form, data={})
 
 @app.route('/generate')
 def generate():
