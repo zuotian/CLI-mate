@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF
+   xmlns:cli="http://www.ontology.liacs.nl/cli#"
+   xmlns:dcterms="http://purl.org/dc/terms/"
+   xmlns:foaf="http://xmlns.com/foaf/1.1/"
+   xmlns:process="http://www.daml.org/services/owl-s/1.1/Process.owl#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+>
+  <rdf:Description rdf:nodeID="output">
+    <process:parameterValue></process:parameterValue>
+    <dcterms:description></dcterms:description>
+    <rdf:type rdf:resource="http://www.daml.org/services/owl-s/1.1/Process.owl#Output"/>
+    <dcterms:format>txt</dcterms:format>
+    <process:parameterType>stdout</process:parameterType>
+    <cli:argument></cli:argument>
+    <cli:argument_alternative></cli:argument_alternative>
+    <rdfs:label>Result</rdfs:label>
+    <dcterms:title>output</dcterms:title>
+    <cli:display>show</cli:display>
+    <cli:propertyBag>""</cli:propertyBag>
+    <cli:order>3</cli:order>
+    <cli:repeatable>False</cli:repeatable>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="DUHSKUPq3">
+    <process:name>head</process:name>
+    <process:hasParameter rdf:nodeID="quiet"/>
+    <process:hasParameter rdf:nodeID="lines"/>
+    <process:hasParameter rdf:nodeID="output"/>
+    <process:hasParameter rdf:nodeID="input"/>
+    <dcterms:hasVersion>GNU coreutils 7.4</dcterms:hasVersion>
+    <dcterms:description>Output the first part of files</dcterms:description>
+    <rdf:type rdf:resource="http://www.daml.org/services/owl-s/1.1/Process.owl#Process"/>
+    <dcterms:creator rdf:nodeID="DUHSKUPq4"/>
+    <dcterms:title>Head</dcterms:title>
+    <dcterms:instructionalMethod>Print  the  first  10 lines of each FILE to standard output.  With more than one FILE, precede each with a header giving the file  name.   With no FILE, or when FILE is -, read standard input.
+
+Mandatory  arguments  to  long  options are mandatory for short options too.</dcterms:instructionalMethod>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="input">
+    <process:parameterValue></process:parameterValue>
+    <dcterms:description></dcterms:description>
+    <rdf:type rdf:resource="http://www.daml.org/services/owl-s/1.1/Process.owl#Input"/>
+    <dcterms:format>txt</dcterms:format>
+    <process:parameterType>input</process:parameterType>
+    <cli:argument></cli:argument>
+    <cli:argument_alternative></cli:argument_alternative>
+    <rdfs:label>File Name</rdfs:label>
+    <dcterms:title>input</dcterms:title>
+    <cli:display>show</cli:display>
+    <cli:propertyBag>""</cli:propertyBag>
+    <cli:order>2</cli:order>
+    <cli:repeatable>True</cli:repeatable>
+  </rdf:Description>
+  <rdf:Description rdf:about="">
+    <dcterms:creator rdf:resource="http://ngs.fixedpoint.nl/interfaceGen/"/>
+    <rdfs:label>RDF Definition of "Head"</rdfs:label>
+    <rdf:type rdf:resource="http://xmlns.com/foaf/1.1/Document"/>
+    <dcterms:created>2011-09-15T14:21:05.552870Z</dcterms:created>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://ngs.fixedpoint.nl/interfaceGen/">
+    <dcterms:title>LUMC Interface Generator</dcterms:title>
+    <dcterms:hasVersion>0.1</dcterms:hasVersion>
+    <rdf:type rdf:resource="http://xmlns.com/foaf/1.1/Agent"/>
+    <dcterms:creator>Zuotian Tatum</dcterms:creator>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="DUHSKUPq4">
+    <foaf:name>David Mackenzie</foaf:name>
+    <rdf:type rdf:resource="http://xmlns.com/foaf/1.1/person"/>
+    <foaf:mbox>bug-coreutils@gnu.org</foaf:mbox>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="quiet">
+    <process:parameterValue></process:parameterValue>
+    <dcterms:description></dcterms:description>
+    <rdf:type rdf:resource="http://www.daml.org/services/owl-s/1.1/Process.owl#Local"/>
+    <dcterms:format></dcterms:format>
+    <process:parameterType>None</process:parameterType>
+    <cli:argument>-q</cli:argument>
+    <cli:argument_alternative></cli:argument_alternative>
+    <rdfs:label>Never print headers giving file names</rdfs:label>
+    <dcterms:title>quiet</dcterms:title>
+    <cli:display>show</cli:display>
+    <cli:propertyBag>""</cli:propertyBag>
+    <cli:order>1</cli:order>
+    <cli:repeatable>False</cli:repeatable>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="lines">
+    <process:parameterValue>4</process:parameterValue>
+    <dcterms:description></dcterms:description>
+    <rdf:type rdf:resource="http://www.daml.org/services/owl-s/1.1/Process.owl#Local"/>
+    <dcterms:format></dcterms:format>
+    <process:parameterType>integer</process:parameterType>
+    <cli:argument>-n</cli:argument>
+    <cli:argument_alternative></cli:argument_alternative>
+    <rdfs:label>Print the first N lines instead of the first 10</rdfs:label>
+    <dcterms:title>lines</dcterms:title>
+    <cli:display>show</cli:display>
+    <cli:propertyBag>""</cli:propertyBag>
+    <cli:order>0</cli:order>
+    <cli:repeatable>False</cli:repeatable>
+  </rdf:Description>
+</rdf:RDF>

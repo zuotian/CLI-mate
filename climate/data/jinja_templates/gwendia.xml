@@ -1,0 +1,47 @@
+{%- macro getType(p) -%}
+  {%- if p.property_bag['access_type'] or p.property_bag['access_location'] -%}
+    uri
+  {%- elif p.type in ['integer', 'boolean', 'float'] -%}
+    {{p.type}}
+  {%- else -%}
+    string
+  {%- endif -%}
+{%- endmacro -%}
+
+<?xml version="1.0" encoding="UTF-8"?>
+<workflow name="{{data.name}}">
+
+  <interface>
+    {%- for parameter in data.parameters %}
+    {% if parameter.type not in ['stdout', 'stderr', 'output'] -%}
+      <source name="{{parameter.name}}" type="{{getType(parameter)}}" />
+    {%- else -%}
+      <sink name="{{parameter.name}}" type="{{getType(parameter)}}" />
+    {%- endif -%}
+    {%- endfor %}
+  </interface>
+
+  <processors>
+    <processor name="{{data.binary}}" >
+      {%- for parameter in data.parameters %}
+      {% if parameter.type not in ['stdout', 'stderr', 'output'] -%}
+        <in name="{{parameter.name}}" type="{{getType(parameter)}}" depth="0" />
+      {%- else -%}
+        <out name="{{parameter.name}}" type="{{getType(parameter)}}" depth="0" />
+      {%- endif -%}
+      {%- endfor %}
+      <gasw descriptor="{{data.property_bag['descriptor_location']}}/{{data.name}}.xml" />
+    </processor>
+  </processors>
+
+  <links>
+    {%- for parameter in data.parameters %}
+    {% if parameter.type not in ['stdout', 'stderr', 'output'] -%}
+      <link from="{{parameter.name}}" to="{{data.binary}}:{{parameter.name}}" />
+    {%- else -%}
+      <link from="{{data.binary}}:{{parameter.name}}" to="{{parameter.name}}" />
+    {%- endif -%}
+    {% endfor %}
+  </links>
+
+</workflow>

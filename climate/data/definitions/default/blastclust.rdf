@@ -1,0 +1,103 @@
+@prefix clp: <http://www.humgen.nl/climate/ontologies/clp#> .
+@prefix co: <http://www.isi.edu/ikcap/Wingse/componentOntology.owl#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix fo: <http://www.isi.edu/ikcap/Wingse/fileOntology.owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+<> a <http://xmlns.com/foaf/1.1/Document>;
+    rdfs:label "RDF Definition of blastclust";
+    dcterms:created "2012-02-14T13:13:48.029216"^^<http://www.w3.org/2001/XMLSchema#dateTime>;
+    dcterms:creator <http://www.humgen.nl/climate> .
+
+<http://www.humgen.nl/climate> a <http://xmlns.com/foaf/1.1/Agent>;
+    dcterms:creator "Zuotian Tatum";
+    dcterms:hasVersion "0.3";
+    dcterms:title "CLI-mate: An interface generator for command line programs" .
+
+[] a <http://www.humgen.nl/climate/ontologies/clp#CommandLineProgramComponentType>;
+    dcterms:description "BLAST score-based single-linkage clustering";
+    dcterms:label "blastclust";
+    dcterms:title "blastclust";
+    co:hasArguments [ a <http://www.isi.edu/ikcap/Wingse/componentOntology.owl#argumentAndPrefixList>;
+            rdf:first [ a <http://www.isi.edu/ikcap/Wingse/componentOntology.owl#ArgumentAndPrefix>;
+                    rdfs:label "FASTA input file";
+                    dcterms:title "input";
+                    clp:display "show";
+                    clp:order 0;
+                    co:hasArgument _:input_arg;
+                    co:hasPrefix "-i" ];
+            rdf:rest ( [ a <http://www.isi.edu/ikcap/Wingse/componentOntology.owl#ArgumentAndPrefix>;
+                        rdfs:label "Number of CPU's to use";
+                        dcterms:title "cpu";
+                        clp:display "show";
+                        clp:order 1;
+                        co:hasArgument [ a <http://www.isi.edu/ikcap/Wingse/fileOntology.owl#Int>;
+                                fo:hasIntValue "1" ];
+                        co:hasPrefix "-a" ] [ a <http://www.isi.edu/ikcap/Wingse/componentOntology.owl#ArgumentAndPrefix>;
+                        rdfs:label "Length coverage threshold ";
+                        dcterms:title "lengthcoveragethreshold";
+                        clp:display "show";
+                        clp:order 2;
+                        co:hasArgument [ a <http://www.isi.edu/ikcap/Wingse/fileOntology.owl#Float>;
+                                fo:hasFloatValue "0.9" ];
+                        co:hasPrefix "-L" ] [ a <http://www.isi.edu/ikcap/Wingse/componentOntology.owl#ArgumentAndPrefix>;
+                        rdfs:label "Score coverage threshold";
+                        dcterms:title "scorecoveragethreshold";
+                        clp:display "show";
+                        clp:order 3;
+                        co:hasArgument [ a <http://www.isi.edu/ikcap/Wingse/fileOntology.owl#Float>;
+                                fo:hasFloatValue "1.75" ];
+                        co:hasPrefix "-S" ] [ a <http://www.isi.edu/ikcap/Wingse/componentOntology.owl#ArgumentAndPrefix>;
+                        rdfs:label "Require coverage on both neighbours";
+                        dcterms:title "neigbours";
+                        clp:display "show";
+                        clp:order 4;
+                        co:hasArgument [ ];
+                        co:hasPrefix "-b" ] [ a <http://www.isi.edu/ikcap/Wingse/componentOntology.owl#ArgumentAndPrefix>;
+                        dcterms:title "protein";
+                        clp:display "show";
+                        clp:order 5;
+                        co:hasArgument [ ];
+                        co:hasPrefix "-p" ] [ a <http://www.isi.edu/ikcap/Wingse/componentOntology.owl#ArgumentAndPrefix>;
+                        dcterms:title "wordsize";
+                        clp:display "show";
+                        clp:order 6;
+                        co:hasArgument [ a <http://www.isi.edu/ikcap/Wingse/fileOntology.owl#Int>;
+                                fo:hasIntValue "5" ];
+                        co:hasPrefix "-W" ] [ a <http://www.isi.edu/ikcap/Wingse/componentOntology.owl#ArgumentAndPrefix>;
+                        dcterms:title "output";
+                        clp:display "show";
+                        clp:order 7;
+                        co:hasArgument _:output_arg;
+                        co:hasPrefix "-o" ] [ a <http://www.isi.edu/ikcap/Wingse/componentOntology.owl#ArgumentAndPrefix>;
+                        dcterms:title "neighboursoutput";
+                        clp:display "show";
+                        clp:order 8;
+                        co:hasArgument _:neighboursoutput_arg;
+                        co:hasPrefix "-s" ] [ a <http://www.isi.edu/ikcap/Wingse/componentOntology.owl#ArgumentAndPrefix>;
+                        rdfs:label "Print progress messages";
+                        dcterms:title "verbose";
+                        clp:display "show";
+                        clp:order 9;
+                        co:hasArgument [ ];
+                        co:hasPrefix "-v stdout" ] ) ];
+    co:hasExecutionRequirments [ a <http://www.isi.edu/ikcap/Wingse/componentOntology.owl#ExecutionRequirements>;
+            co:requiresOperationSystem <http://www.isi.edu/ikcap/Wingse/componentOntology.owl#Linux> ];
+    co:hasInputs [ a <http://www.isi.edu/ikcap/Wingse/componentOntology.owl#FileOrCollectionList>;
+            rdf:first _:input_arg;
+            rdf:rest () ];
+    co:hasOutputs [ a <http://www.isi.edu/ikcap/Wingse/componentOntology.owl#FileOrCollectionList>;
+            rdf:first _:output_arg;
+            rdf:rest ( _:neighboursoutput_arg ) ];
+    co:hasVersion "1" .
+
+_:input_arg a <http://www.isi.edu/ikcap/Wingse/fileOntology.owl#File>;
+    dcterms:format "fasta" .
+
+_:neighboursoutput_arg a <http://www.isi.edu/ikcap/Wingse/fileOntology.owl#File>;
+    dcterms:format "txt" .
+
+_:output_arg a <http://www.isi.edu/ikcap/Wingse/fileOntology.owl#File>;
+    dcterms:format "txt" .
+

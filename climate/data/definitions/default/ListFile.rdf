@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF
+   xmlns:cli="http://www.ontology.liacs.nl/cli#"
+   xmlns:dcterms="http://purl.org/dc/terms/"
+   xmlns:foaf="http://xmlns.com/foaf/1.1/"
+   xmlns:process="http://www.daml.org/services/owl-s/1.1/Process.owl#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+>
+  <rdf:Description rdf:nodeID="output">
+    <process:parameterType>stdout</process:parameterType>
+    <cli:argument></cli:argument>
+    <cli:propertyBag>""</cli:propertyBag>
+    <cli:order>5</cli:order>
+    <cli:repeatable>False</cli:repeatable>
+    <rdf:type rdf:resource="http://www.daml.org/services/owl-s/1.1/Process.owl#Output"/>
+    <rdfs:label>Output file</rdfs:label>
+    <cli:argument_alternative></cli:argument_alternative>
+    <process:parameterValue></process:parameterValue>
+    <cli:display>show</cli:display>
+    <dcterms:title>output</dcterms:title>
+    <dcterms:description></dcterms:description>
+    <dcterms:format>txt</dcterms:format>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="tabs">
+    <process:parameterType>integer</process:parameterType>
+    <cli:argument>-T</cli:argument>
+    <cli:propertyBag>""</cli:propertyBag>
+    <cli:order>4</cli:order>
+    <cli:repeatable>False</cli:repeatable>
+    <rdf:type rdf:resource="http://www.daml.org/services/owl-s/1.1/Process.owl#Local"/>
+    <rdfs:label>Assume tab stops at each COLS</rdfs:label>
+    <cli:argument_alternative></cli:argument_alternative>
+    <process:parameterValue>4</process:parameterValue>
+    <cli:display>show</cli:display>
+    <dcterms:title>tabs</dcterms:title>
+    <dcterms:description></dcterms:description>
+    <dcterms:format></dcterms:format>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://ngs.fixedpoint.nl/interfaceGen/">
+    <rdf:type rdf:resource="http://xmlns.com/foaf/1.1/Agent"/>
+    <dcterms:hasVersion>0.1</dcterms:hasVersion>
+    <dcterms:title>LUMC Interface Generator</dcterms:title>
+    <dcterms:creator>Zuotian Tatum</dcterms:creator>
+  </rdf:Description>
+  <rdf:Description rdf:about="">
+    <rdf:type rdf:resource="http://xmlns.com/foaf/1.1/Document"/>
+    <dcterms:created>2011-09-15T14:27:37.391734Z</dcterms:created>
+    <dcterms:creator rdf:resource="http://ngs.fixedpoint.nl/interfaceGen/"/>
+    <rdfs:label>RDF Definition of "List File"</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ugZTdlRX8">
+    <process:name>ls</process:name>
+    <dcterms:description>List files in a directory.</dcterms:description>
+    <rdf:type rdf:resource="http://www.daml.org/services/owl-s/1.1/Process.owl#Process"/>
+    <dcterms:creator rdf:nodeID="ugZTdlRX9"/>
+    <process:hasParameter rdf:nodeID="output"/>
+    <process:hasParameter rdf:nodeID="tabs"/>
+    <process:hasParameter rdf:nodeID="human_readable"/>
+    <process:hasParameter rdf:nodeID="color"/>
+    <process:hasParameter rdf:nodeID="list"/>
+    <process:hasParameter rdf:nodeID="all"/>
+    <dcterms:hasVersion>GNU coreutils 7.4</dcterms:hasVersion>
+    <dcterms:title>List File</dcterms:title>
+    <dcterms:instructionalMethod>**List information  about the FILEs (the current directory by default).**
+
+Sort entries alphabetically if none of -cftuvSUX nor --sort.
+
+Mandatory arguments to long options are  mandatory  for  short  options too.</dcterms:instructionalMethod>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="human_readable">
+    <process:parameterType>None</process:parameterType>
+    <cli:argument>-h</cli:argument>
+    <cli:propertyBag>""</cli:propertyBag>
+    <cli:order>2</cli:order>
+    <cli:repeatable>False</cli:repeatable>
+    <rdf:type rdf:resource="http://www.daml.org/services/owl-s/1.1/Process.owl#Local"/>
+    <rdfs:label>With -l, print sizes in human readable format (e.g., 1K 234M 2G)</rdfs:label>
+    <cli:argument_alternative></cli:argument_alternative>
+    <process:parameterValue></process:parameterValue>
+    <cli:display>show</cli:display>
+    <dcterms:title>human_readable</dcterms:title>
+    <dcterms:description></dcterms:description>
+    <dcterms:format></dcterms:format>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="color">
+    <process:parameterType>select</process:parameterType>
+    <cli:argument>--color</cli:argument>
+    <cli:propertyBag>""</cli:propertyBag>
+    <cli:order>3</cli:order>
+    <cli:repeatable>False</cli:repeatable>
+    <rdf:type rdf:resource="http://www.daml.org/services/owl-s/1.1/Process.owl#Local"/>
+    <rdfs:label></rdfs:label>
+    <cli:argument_alternative></cli:argument_alternative>
+    <process:parameterValue>none, always, auto</process:parameterValue>
+    <cli:display>show</cli:display>
+    <dcterms:title>color</dcterms:title>
+    <dcterms:description></dcterms:description>
+    <dcterms:format></dcterms:format>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ugZTdlRX9">
+    <rdf:type rdf:resource="http://xmlns.com/foaf/1.1/person"/>
+    <foaf:name>Richard M. Stallman</foaf:name>
+    <foaf:mbox>bug-coreutils@gnu.org</foaf:mbox>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="list">
+    <process:parameterType>None</process:parameterType>
+    <cli:argument>-l</cli:argument>
+    <cli:propertyBag>""</cli:propertyBag>
+    <cli:order>1</cli:order>
+    <cli:repeatable>False</cli:repeatable>
+    <rdf:type rdf:resource="http://www.daml.org/services/owl-s/1.1/Process.owl#Local"/>
+    <rdfs:label>Use a long listing format</rdfs:label>
+    <cli:argument_alternative></cli:argument_alternative>
+    <process:parameterValue></process:parameterValue>
+    <cli:display>show</cli:display>
+    <dcterms:title>list</dcterms:title>
+    <dcterms:description></dcterms:description>
+    <dcterms:format></dcterms:format>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ugZTdlRX10">
+    <cli:depending_condition></cli:depending_condition>
+    <cli:dependent_parameter rdf:nodeID="human_readable"/>
+    <rdf:type rdf:resource="http://www.ontology.liacs.nl/cli#dependency"/>
+    <cli:dependent_effect>show</cli:dependent_effect>
+    <cli:depending_parameter rdf:nodeID="list"/>
+    <cli:dependent_scope>display</cli:dependent_scope>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="all">
+    <process:parameterType>None</process:parameterType>
+    <cli:argument>-a</cli:argument>
+    <cli:propertyBag>""</cli:propertyBag>
+    <cli:order>0</cli:order>
+    <cli:repeatable>False</cli:repeatable>
+    <rdf:type rdf:resource="http://www.daml.org/services/owl-s/1.1/Process.owl#Local"/>
+    <rdfs:label>Do not ignore entries starting with </rdfs:label>
+    <cli:argument_alternative></cli:argument_alternative>
+    <process:parameterValue></process:parameterValue>
+    <cli:display>show</cli:display>
+    <dcterms:title>all</dcterms:title>
+    <dcterms:description>This will print out hidden files in the directory.</dcterms:description>
+    <dcterms:format></dcterms:format>
+  </rdf:Description>
+</rdf:RDF>

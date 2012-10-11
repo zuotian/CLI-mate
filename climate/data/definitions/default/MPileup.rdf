@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF
+   xmlns:cli="http://www.ontology.liacs.nl/cli#"
+   xmlns:dcterms="http://purl.org/dc/terms/"
+   xmlns:foaf="http://xmlns.com/foaf/1.1/"
+   xmlns:process="http://www.daml.org/services/owl-s/1.1/Process.owl#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+>
+  <rdf:Description rdf:nodeID="Reference">
+    <cli:argument>-f</cli:argument>
+    <rdfs:label>Choose a file for reference index</rdfs:label>
+    <process:parameterValue></process:parameterValue>
+    <cli:propertyBag>{"loc_id_filter": "Input.metadata.dbkey", "from_loc": "path"}</cli:propertyBag>
+    <cli:argument_alternative></cli:argument_alternative>
+    <dcterms:title>Reference</dcterms:title>
+    <dcterms:description></dcterms:description>
+    <cli:display>hide</cli:display>
+    <dcterms:format></dcterms:format>
+    <cli:order>2</cli:order>
+    <cli:repeatable>False</cli:repeatable>
+    <rdf:type rdf:resource="http://www.daml.org/services/owl-s/1.1/Process.owl#Input"/>
+    <process:parameterType>input</process:parameterType>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Output">
+    <cli:argument></cli:argument>
+    <rdfs:label>Output</rdfs:label>
+    <process:parameterValue></process:parameterValue>
+    <cli:propertyBag>""</cli:propertyBag>
+    <cli:argument_alternative></cli:argument_alternative>
+    <dcterms:title>Output</dcterms:title>
+    <dcterms:description></dcterms:description>
+    <cli:display>show</cli:display>
+    <dcterms:format>pileup</dcterms:format>
+    <cli:order>6</cli:order>
+    <cli:repeatable>False</cli:repeatable>
+    <rdf:type rdf:resource="http://www.daml.org/services/owl-s/1.1/Process.owl#Output"/>
+    <process:parameterType>stdout</process:parameterType>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="InputFormat">
+    <cli:argument>-S</cli:argument>
+    <rdfs:label></rdfs:label>
+    <process:parameterValue></process:parameterValue>
+    <cli:propertyBag>""</cli:propertyBag>
+    <cli:argument_alternative></cli:argument_alternative>
+    <dcterms:title>InputFormat</dcterms:title>
+    <dcterms:description></dcterms:description>
+    <cli:display>hide</cli:display>
+    <dcterms:format></dcterms:format>
+    <cli:order>4</cli:order>
+    <cli:repeatable>False</cli:repeatable>
+    <rdf:type rdf:resource="http://www.daml.org/services/owl-s/1.1/Process.owl#Local"/>
+    <process:parameterType>None</process:parameterType>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="pileup">
+    <cli:argument>pileup</cli:argument>
+    <rdfs:label></rdfs:label>
+    <process:parameterValue></process:parameterValue>
+    <cli:propertyBag>""</cli:propertyBag>
+    <cli:argument_alternative></cli:argument_alternative>
+    <dcterms:title>pileup</dcterms:title>
+    <dcterms:description></dcterms:description>
+    <cli:display>hide</cli:display>
+    <dcterms:format></dcterms:format>
+    <cli:order>0</cli:order>
+    <cli:repeatable>False</cli:repeatable>
+    <rdf:type rdf:resource="http://www.daml.org/services/owl-s/1.1/Process.owl#Local"/>
+    <process:parameterType>None</process:parameterType>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Input">
+    <cli:argument></cli:argument>
+    <rdfs:label>Input </rdfs:label>
+    <process:parameterValue></process:parameterValue>
+    <cli:propertyBag>""</cli:propertyBag>
+    <cli:argument_alternative></cli:argument_alternative>
+    <dcterms:title>Input</dcterms:title>
+    <dcterms:description></dcterms:description>
+    <cli:display>show</cli:display>
+    <dcterms:format>sam</dcterms:format>
+    <cli:order>5</cli:order>
+    <cli:repeatable>False</cli:repeatable>
+    <rdf:type rdf:resource="http://www.daml.org/services/owl-s/1.1/Process.owl#Input"/>
+    <process:parameterType>input</process:parameterType>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="hOxlEtYc3">
+    <dcterms:hasVersion>0.1.13</dcterms:hasVersion>
+    <dcterms:instructionalMethod>Generate BCF or pileup for one or multiple SAM files. Alignment records are grouped by sample identifiers in @RG header lines. If sample identifiers are absent, each input file is regarded as one sample. 
+</dcterms:instructionalMethod>
+    <process:hasParameter rdf:nodeID="Reference"/>
+    <process:hasParameter rdf:nodeID="Output"/>
+    <process:hasParameter rdf:nodeID="InputFormat"/>
+    <process:hasParameter rdf:nodeID="pileup"/>
+    <process:hasParameter rdf:nodeID="Input"/>
+    <process:hasParameter rdf:nodeID="Uncompressed"/>
+    <process:hasParameter rdf:nodeID="Status"/>
+    <process:hasParameter rdf:nodeID="Genotype"/>
+    <dcterms:title>MPileup</dcterms:title>
+    <dcterms:creator rdf:nodeID="hOxlEtYc4"/>
+    <dcterms:description>Generate BCF or pileup for one or multiple SAM files.</dcterms:description>
+    <rdf:type rdf:resource="http://www.daml.org/services/owl-s/1.1/Process.owl#Process"/>
+    <process:name>samtools</process:name>
+  </rdf:Description>
+  <rdf:Description rdf:about="">
+    <rdfs:label>RDF Definition of "MPileup"</rdfs:label>
+    <dcterms:created>2011-09-15T15:39:40.448212Z</dcterms:created>
+    <dcterms:creator rdf:resource="http://ngs.fixedpoint.nl/interfaceGen/"/>
+    <rdf:type rdf:resource="http://xmlns.com/foaf/1.1/Document"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Uncompressed">
+    <cli:argument>-u</cli:argument>
+    <rdfs:label>Output uncompressed BCF</rdfs:label>
+    <process:parameterValue>True</process:parameterValue>
+    <cli:propertyBag>""</cli:propertyBag>
+    <cli:argument_alternative></cli:argument_alternative>
+    <dcterms:title>Uncompressed</dcterms:title>
+    <dcterms:description>Similar to the Genotype parameter, except that the output is uncompressed BCF, which is preferred for piping.</dcterms:description>
+    <cli:display>show</cli:display>
+    <dcterms:format></dcterms:format>
+    <cli:order>3</cli:order>
+    <cli:repeatable>False</cli:repeatable>
+    <rdf:type rdf:resource="http://www.daml.org/services/owl-s/1.1/Process.owl#Local"/>
+    <process:parameterType>None</process:parameterType>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="hOxlEtYc4">
+    <foaf:name>Heng Li</foaf:name>
+    <foaf:mbox></foaf:mbox>
+    <rdf:type rdf:resource="http://xmlns.com/foaf/1.1/person"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Status">
+    <cli:argument></cli:argument>
+    <rdfs:label>Status</rdfs:label>
+    <process:parameterValue>status.txt</process:parameterValue>
+    <cli:propertyBag>""</cli:propertyBag>
+    <cli:argument_alternative></cli:argument_alternative>
+    <dcterms:title>Status</dcterms:title>
+    <dcterms:description>All messages printed to standard error.</dcterms:description>
+    <cli:display>show</cli:display>
+    <dcterms:format></dcterms:format>
+    <cli:order>7</cli:order>
+    <cli:repeatable>False</cli:repeatable>
+    <rdf:type rdf:resource="http://www.daml.org/services/owl-s/1.1/Process.owl#Local"/>
+    <process:parameterType>stderr</process:parameterType>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://ngs.fixedpoint.nl/interfaceGen/">
+    <dcterms:hasVersion>0.1</dcterms:hasVersion>
+    <dcterms:creator>Zuotian Tatum</dcterms:creator>
+    <rdf:type rdf:resource="http://xmlns.com/foaf/1.1/Agent"/>
+    <dcterms:title>LUMC Interface Generator</dcterms:title>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Genotype">
+    <cli:argument>-g</cli:argument>
+    <rdfs:label>Compute genotype likelihoods</rdfs:label>
+    <process:parameterValue>True</process:parameterValue>
+    <cli:propertyBag>""</cli:propertyBag>
+    <cli:argument_alternative></cli:argument_alternative>
+    <dcterms:title>Genotype</dcterms:title>
+    <dcterms:description>Compute genotype likelihoods and output them in the binary call format (BCF).</dcterms:description>
+    <cli:display>show</cli:display>
+    <dcterms:format></dcterms:format>
+    <cli:order>1</cli:order>
+    <cli:repeatable>False</cli:repeatable>
+    <rdf:type rdf:resource="http://www.daml.org/services/owl-s/1.1/Process.owl#Local"/>
+    <process:parameterType>None</process:parameterType>
+  </rdf:Description>
+</rdf:RDF>

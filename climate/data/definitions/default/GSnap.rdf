@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF
+   xmlns:cli="http://www.ontology.liacs.nl/cli#"
+   xmlns:dcterms="http://purl.org/dc/terms/"
+   xmlns:foaf="http://xmlns.com/foaf/1.1/"
+   xmlns:process="http://www.daml.org/services/owl-s/1.1/Process.owl#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+>
+  <rdf:Description rdf:nodeID="referencepath">
+    <cli:argument_alternative></cli:argument_alternative>
+    <process:parameterType>string</process:parameterType>
+    <cli:propertyBag>{"loc_id_filter": "reference", "from_loc": "path"}</cli:propertyBag>
+    <dcterms:format></dcterms:format>
+    <dcterms:title>referencepath</dcterms:title>
+    <cli:argument>-D</cli:argument>
+    <cli:repeatable>False</cli:repeatable>
+    <process:parameterValue>/usr/local/</process:parameterValue>
+    <dcterms:description></dcterms:description>
+    <cli:order>4</cli:order>
+    <cli:display>hide</cli:display>
+    <rdf:type rdf:resource="http://www.daml.org/services/owl-s/1.1/Process.owl#Local"/>
+    <rdfs:label>Path to the reference database</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="VPUkfxYM6">
+    <cli:dependent_scope>format</cli:dependent_scope>
+    <rdf:type rdf:resource="http://www.ontology.liacs.nl/cli#dependency"/>
+    <cli:depending_condition>fasta</cli:depending_condition>
+    <cli:depending_parameter rdf:nodeID="format"/>
+    <cli:dependent_effect>fasta</cli:dependent_effect>
+    <cli:dependent_parameter rdf:nodeID="output"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="input2">
+    <cli:argument_alternative></cli:argument_alternative>
+    <process:parameterType>input</process:parameterType>
+    <cli:propertyBag>""</cli:propertyBag>
+    <dcterms:format>fastq</dcterms:format>
+    <dcterms:title>input2</dcterms:title>
+    <cli:argument></cli:argument>
+    <cli:repeatable>False</cli:repeatable>
+    <process:parameterValue></process:parameterValue>
+    <dcterms:description>Your input.</dcterms:description>
+    <cli:order>6</cli:order>
+    <cli:display>show</cli:display>
+    <rdf:type rdf:resource="http://www.daml.org/services/owl-s/1.1/Process.owl#Input"/>
+    <rdfs:label>Paired end 2</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="threads">
+    <cli:argument_alternative></cli:argument_alternative>
+    <process:parameterType>integer</process:parameterType>
+    <cli:propertyBag>""</cli:propertyBag>
+    <dcterms:format></dcterms:format>
+    <dcterms:title>threads</dcterms:title>
+    <cli:argument>-t</cli:argument>
+    <cli:repeatable>False</cli:repeatable>
+    <process:parameterValue>4</process:parameterValue>
+    <dcterms:description>Leave this alone.</dcterms:description>
+    <cli:order>0</cli:order>
+    <cli:display>show in advanced</cli:display>
+    <rdf:type rdf:resource="http://www.daml.org/services/owl-s/1.1/Process.owl#Local"/>
+    <rdfs:label>Number of threads</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="reference">
+    <cli:argument_alternative></cli:argument_alternative>
+    <process:parameterType>select</process:parameterType>
+    <cli:propertyBag>{"from_loc": "data_table"}</cli:propertyBag>
+    <dcterms:format></dcterms:format>
+    <dcterms:title>reference</dcterms:title>
+    <cli:argument>-d</cli:argument>
+    <cli:repeatable>False</cli:repeatable>
+    <process:parameterValue>hg19</process:parameterValue>
+    <dcterms:description></dcterms:description>
+    <cli:order>3</cli:order>
+    <cli:display>show</cli:display>
+    <rdf:type rdf:resource="http://www.daml.org/services/owl-s/1.1/Process.owl#Local"/>
+    <rdfs:label>The reference database</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="input1">
+    <cli:argument_alternative></cli:argument_alternative>
+    <process:parameterType>input</process:parameterType>
+    <cli:propertyBag>""</cli:propertyBag>
+    <dcterms:format>fastq</dcterms:format>
+    <dcterms:title>input1</dcterms:title>
+    <cli:argument></cli:argument>
+    <cli:repeatable>False</cli:repeatable>
+    <process:parameterValue></process:parameterValue>
+    <dcterms:description>Your input.</dcterms:description>
+    <cli:order>5</cli:order>
+    <cli:display>show</cli:display>
+    <rdf:type rdf:resource="http://www.daml.org/services/owl-s/1.1/Process.owl#Input"/>
+    <rdfs:label>Paired end 1</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="">
+    <dcterms:created>2011-09-15T14:25:19.145790Z</dcterms:created>
+    <dcterms:creator rdf:resource="http://ngs.fixedpoint.nl/interfaceGen/"/>
+    <rdfs:label>RDF Definition of "GSnap"</rdfs:label>
+    <rdf:type rdf:resource="http://xmlns.com/foaf/1.1/Document"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="VPUkfxYM3">
+    <dcterms:instructionalMethod>**What it does**
+
+BWA is a fast light-weighted tool that aligns relatively short sequences (queries) to a sequence database (large), such as the human reference genome. It is developed by Heng Li at the Sanger Insitute. Li H. and Durbin R. (2009) Fast and accurate short read alignment with Burrows-Wheeler transform. Bioinformatics, 25, 1754-60.
+
+------
+
+**Know what you are doing**
+
+.. class:: warningmark
+
+There is no such thing (yet) as an automated gearshift in short read mapping. It is all like stick-shift driving in San Francisco. In other words = running this tool with default parameters will probably not give you meaningful results. A way to deal with this is to **understand** the parameters by carefully reading the `documentation`__ and experimenting. Fortunately, Galaxy makes experimenting easy.
+
+ .. __: http://bio-bwa.sourceforge.net/
+
+------
+
+**Input formats**
+
+BWA accepts files in Sanger FASTQ format. Use the FASTQ Groomer to prepare your files.
+
+</dcterms:instructionalMethod>
+    <process:name>gsnap</process:name>
+    <dcterms:creator rdf:nodeID="VPUkfxYM4"/>
+    <dcterms:title>GSnap</dcterms:title>
+    <rdf:type rdf:resource="http://www.daml.org/services/owl-s/1.1/Process.owl#Process"/>
+    <process:hasParameter rdf:nodeID="referencepath"/>
+    <process:hasParameter rdf:nodeID="input2"/>
+    <process:hasParameter rdf:nodeID="input1"/>
+    <process:hasParameter rdf:nodeID="reference"/>
+    <process:hasParameter rdf:nodeID="threads"/>
+    <process:hasParameter rdf:nodeID="format"/>
+    <process:hasParameter rdf:nodeID="output"/>
+    <process:hasParameter rdf:nodeID="memkeep"/>
+    <process:hasParameter rdf:nodeID="error"/>
+    <dcterms:description>RNA aligner</dcterms:description>
+    <dcterms:hasVersion></dcterms:hasVersion>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="VPUkfxYM5">
+    <cli:dependent_scope>format</cli:dependent_scope>
+    <rdf:type rdf:resource="http://www.ontology.liacs.nl/cli#dependency"/>
+    <cli:depending_condition>sam</cli:depending_condition>
+    <cli:depending_parameter rdf:nodeID="format"/>
+    <cli:dependent_effect>sam</cli:dependent_effect>
+    <cli:dependent_parameter rdf:nodeID="output"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://ngs.fixedpoint.nl/interfaceGen/">
+    <dcterms:creator>Zuotian Tatum</dcterms:creator>
+    <dcterms:hasVersion>0.1</dcterms:hasVersion>
+    <dcterms:title>LUMC Interface Generator</dcterms:title>
+    <rdf:type rdf:resource="http://xmlns.com/foaf/1.1/Agent"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="format">
+    <cli:argument_alternative></cli:argument_alternative>
+    <process:parameterType>select</process:parameterType>
+    <cli:propertyBag>""</cli:propertyBag>
+    <dcterms:format></dcterms:format>
+    <dcterms:title>format</dcterms:title>
+    <cli:argument>-A</cli:argument>
+    <cli:repeatable>False</cli:repeatable>
+    <process:parameterValue>sam, fasta</process:parameterValue>
+    <dcterms:description></dcterms:description>
+    <cli:order>2</cli:order>
+    <cli:display>show</cli:display>
+    <rdf:type rdf:resource="http://www.daml.org/services/owl-s/1.1/Process.owl#Local"/>
+    <rdfs:label>Output format</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="output">
+    <cli:argument_alternative></cli:argument_alternative>
+    <process:parameterType>stdout</process:parameterType>
+    <cli:propertyBag>""</cli:propertyBag>
+    <dcterms:format></dcterms:format>
+    <dcterms:title>output</dcterms:title>
+    <cli:argument></cli:argument>
+    <cli:repeatable>False</cli:repeatable>
+    <process:parameterValue></process:parameterValue>
+    <dcterms:description></dcterms:description>
+    <cli:order>7</cli:order>
+    <cli:display>show</cli:display>
+    <rdf:type rdf:resource="http://www.daml.org/services/owl-s/1.1/Process.owl#Output"/>
+    <rdfs:label>output</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="memkeep">
+    <cli:argument_alternative></cli:argument_alternative>
+    <process:parameterType>integer</process:parameterType>
+    <cli:propertyBag>""</cli:propertyBag>
+    <dcterms:format></dcterms:format>
+    <dcterms:title>memkeep</dcterms:title>
+    <cli:argument>-B</cli:argument>
+    <cli:repeatable>False</cli:repeatable>
+    <process:parameterValue>4</process:parameterValue>
+    <dcterms:description>Leave this alone.</dcterms:description>
+    <cli:order>1</cli:order>
+    <cli:display>show in advanced</cli:display>
+    <rdf:type rdf:resource="http://www.daml.org/services/owl-s/1.1/Process.owl#Local"/>
+    <rdfs:label>Keep maps in memory</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="error">
+    <cli:argument_alternative></cli:argument_alternative>
+    <process:parameterType>stderr</process:parameterType>
+    <cli:propertyBag>""</cli:propertyBag>
+    <dcterms:format>txt</dcterms:format>
+    <dcterms:title>error</dcterms:title>
+    <cli:argument></cli:argument>
+    <cli:repeatable>False</cli:repeatable>
+    <process:parameterValue></process:parameterValue>
+    <dcterms:description></dcterms:description>
+    <cli:order>8</cli:order>
+    <cli:display>show</cli:display>
+    <rdf:type rdf:resource="http://www.daml.org/services/owl-s/1.1/Process.owl#Local"/>
+    <rdfs:label>Error/Status message.</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="VPUkfxYM4">
+    <foaf:mbox></foaf:mbox>
+    <foaf:name></foaf:name>
+    <rdf:type rdf:resource="http://xmlns.com/foaf/1.1/person"/>
+  </rdf:Description>
+</rdf:RDF>
