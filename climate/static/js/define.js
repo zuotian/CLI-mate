@@ -38,16 +38,24 @@ var formatSource = [
 	"taxonomy", "textsearch", "twobit", "txt",  "vcf", "vectorstrip", "wig", "wobble", "wordcount", "wsf", "xls"];
 
 
+var io_prefixes = {
+	'input' : '',
+	'output' : '',
+	'stdin' : '<',
+	'stdout' : '>',
+	'stderr' : '2>'
+};
+
 var argument_manager = {
 	total: 0,
 	arguments: null,
 	stop: false, // for accordion
 
 	init: function(arguments) {
-		this.total = arguments.children().length;
-		arguments.each(function(){ argument_manager.setupArgumentRow($(this)); });
 		this.arguments = arguments;
-		this.arguments.find('#argument-empty').hide();
+		this.total = arguments.children().length;
+		arguments.each(function(){ arg_row_manager.setup($(this)); });
+		this.setupAccordion();
 	},
 
 	setupAccordion: function (){
@@ -70,20 +78,54 @@ var argument_manager = {
 	},
 
 	addArg: function(){
-		var newRow = $('div#argument-empty div.row-inner').clone();
-		var position = this.arguments.children().length;
 
 		this.total += 1;
-		var newRowName = 'Argument' + this.total;
+		var position = this.arguments.children().length;
+
+		var newRow = arg_row_manager.newRow(this.total, position);
+		newRow.show();
+
+		// add to the form.
+		this.arguments.append(newRow);
+
+		// setup events.
+		this.setupAccordion();
+		this.arguments.accordion("option", "active", position);
+
+		return false;
+	},
+
+	_refreshOrder: function(){
+		var order = this.arguments.sortable("toArray");
+		for (var i = 0; i < order.length; i++) {
+			this.arguments.children('div#' + order[i]).find('input.p_rank').val(i);
+		}
+	}
+};
+
+var arg_row_manager = {
+
+	// for renaming an argument.
+	current_name: '',
+
+	newRow : function(row_id, position){
+
+		var name = 'Argument' + row_id;
+		var newRow = $('div#argument-empty').clone();
+
+		newRow.attr('id', 'row_' + row_id);
+		newRow.removeClass('argument-empty').addClass('row');
+		newRow.find('h4 a').html(name);
+
+		var newRowInner = newRow.find('div.row-inner');
 
 		// set up default values.
-		newRow.attr('id', this.total);
-		newRow.find('input.p_rank').val(position);
-		newRow.find('input.p_name').val(newRowName);
-		newRow.find('tr.optional').hide();
+		newRowInner.attr('id', row_id);
+		newRowInner.find('input.p_rank').val(position);
+		newRowInner.find('input.p_name').val(name);
 
 		// setup dependency list based on existing arguments.
-		newRow.find('select.p_depending_argument').html(function() {
+		newRowInner.find('select.p_depending_argument').html(function() {
 			var options = '<option>None</option>';
 			$('div#arguments input.p_name').each(function() {
 				var name = $(this).val();
@@ -94,43 +136,26 @@ var argument_manager = {
 
 		// add the new argument to other argument's dependency list.
 		$('select.p_depending_argument')
-			.append('<option value="' + newRowName + '">' + newRowName + '</option>');
+			.append('<option value="' + name + '">' + name + '</option>');
 
-		// add to the form.
-		this.arguments.append(newRow);
+		this.setup(newRow);
 
-		// wrap the new row into the structure required by accordion.
-		newRow.wrap("<div class='row' id='row_" + this.total + "'></div>")
-			  .before('<h4><a href="#" class="row-title">' + newRowName + '</a></h4>');
-
-
-		// setup events.
-		this.setupAccordion();
-		this.arguments.accordion("option", "active", position);
-		this.setupArgumentRow(newRow);
-
-		return false;
+		return newRow;
 	},
 
-	_refreshOrder: function(){
-		var order = this.arguments.sortable("toArray");
-		for (var i = 0; i < order.length; i++) {
-			this.arguments.children('div#' + order[i]).find('input.p_rank').val(i);
-		}
-	},
+	setup: function(arg_row){
 
-	setupArgumentRow:function(arg) {
 		// hide rank. this is managed by accordion order.
-		arg.find(".p_rank").hide();
+		arg_row.find("p.p_rank").hide();
 
 		// auto complete for format
-		arg.find('input.p_format').autocomplete({ source: formatSource});
+		arg_row.find('input.p_format').autocomplete({ source: formatSource});
 
 		// hide advanced options by default
-		arg.find('div.full').hide();
+		arg_row.find('div.full').hide();
 
 		// toggle advanced portion of the form
-		arg.find('button.advancedToggle').click(function() {
+		arg_row.find('button.advancedToggle').click(function() {
 			if ($(this).hasClass('less')) {
 				$(this).removeClass('less');
 				$(this).find('span').text('Show advanced options');
@@ -145,35 +170,75 @@ var argument_manager = {
 		});
 
 		// delete an argument
-		arg.find('button.deleteArg').click(function() {
+		arg_row.find('button.deleteArg').click(function() {
 			// don't do anything if there's only one argument in the form.
-			if (this.total > 1) {
+			if (argument_manager.total > 1) {
 				var row = $(this).closest('div.row');
 				var name = row.find('input.p_name').val();
 				row.remove();
 				$('select.p_depending_argument option[value="' + name + '"]').remove();
-				this.setupAccordion();
-				this._refreshOrder();
+				argument_manager.setupAccordion();
+				argument_manager._refreshOrder();
 			}
 			return false;
 		});
 
+		var arg_type = arg_row.find('select.p_arg_type');
+		// hide format input from user if the arg type is not input/output.
+		if (io_prefixes[arg_type.val()] === undefined) {
+			arg_row.find('p.p_format').hide();
+		}
+
+		// handle changes to the argument type.
+		arg_type.change(function(){
+			var format = arg_row.find('p.p_format');
+			var prefix = arg_row.find('input.p_prefix');
+			var new_prefix = io_prefixes[$(this).val()];
+			if (new_prefix === undefined){
+				format.hide();
+				prefix.val('');
+			} else {
+				format.show();
+				prefix.val(new_prefix);
+			}
+		});
+
+		// renaming an argument.
+		arg_row.find('input.p_name')
+			.focusin(function() {
+				arg_row_manager.current_name = $(this).val();
+			})
+			.focusout(function() {
+				var row = $(this).closest('div.row');
+				var newName = $(this).val();
+				row.find('a.row-title').html(newName);
+				$('select.p_depending_parameter option[value="' + arg_row_manager.current_name + '"]')
+					.attr('value', newName)
+					.html(newName);
+				arg_row_manager.current_name = "";
+			});
 	}
 };
 
 (function(){
 	$(document).ready(function() {
+		// use tab view to divide the form into three parts.
 		$('#tabs').tabs();
 
+		// helptip for the tool help text area.
 		$('.helptip').tooltipsy({
 			alignTo: 'cursor',
 			offset: [-300, 0],
 			content : function() { return $('div#helptip').html(); },
 			css: tooltip_css});
 
-		argument_manager.init($('#arguments'));
-		argument_manager.setupAccordion();
+		// hide empty argument row.
+		$('#argument-empty').hide();
 
+		// initialize arguments.
+		argument_manager.init($('#arguments'));
+
+		// new argument button.
 		$('button#addArg').click(function(){
 			argument_manager.addArg();
 			return false;

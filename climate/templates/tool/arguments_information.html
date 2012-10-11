@@ -10,11 +10,10 @@
             {% set id = loop.index %}
             {% include 'tool/argument_row.html' %}
         {% endfor %}
-
-        {# print out an empty form for adding new arguments #}
-        {% set a_form = empty_argument_form %}
-        {% include 'tool/argument_row.html' %}
     </div>
+    {# print out an empty form for adding new arguments #}
+    {% set a_form = empty_argument_form %}
+    {% include 'tool/argument_row.html' %}
     <p><br/>
         <button id="addArg">Add Argument</button>
     </p>

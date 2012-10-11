@@ -7,18 +7,18 @@
     <div class="row-inner" id="{{ id }}">
         <div class="left">
             {% for field_name in a_form.field_set['left'] %}
-                <p class="p_{{ field_name }}">{{ a_form[field_name].label }}{{ a_form[field_name] }}</p>
+                <p class="p_{{ field_name }}">{{ a_form[field_name].label }}{{ a_form[field_name](class='p_' + field_name) }}</p>
             {% endfor  %}
         </div>
         <div class="right">
             {% for field_name in a_form.field_set['right'] %}
-                <p class="p_{{ field_name }}">{{ a_form[field_name].label }}{{ a_form[field_name] }}</p>
+                <p class="p_{{ field_name }}">{{ a_form[field_name].label }}{{ a_form[field_name](class='p_' + field_name) }}</p>
             {% endfor  %}
         </div>
         <div class="full hide" >
             {% set close = True %}
             {% for field_name in a_form.field_set['advanced'] %}
-                <p class="p_{{ field_name }}">{{ a_form[field_name].label }}{{ a_form[field_name] }}</p>
+                <p class="p_{{ field_name }}">{{ a_form[field_name].label }}{{ a_form[field_name](class='p_' + field_name) }}</p>
             {% endfor %}
 
             <div class="dependencies">
