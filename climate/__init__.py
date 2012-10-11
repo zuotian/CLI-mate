@@ -6,6 +6,8 @@
 
 from flask import Flask
 from flask.ext.mongoengine import MongoEngine
+import os
+
 
 app = Flask(__name__)
 app.config.from_pyfile('../climate.cfg')

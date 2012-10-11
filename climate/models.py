@@ -5,7 +5,18 @@
 """
 
 from climate import db
-import datetime
+import surf
+
+ns_dict = {
+    'FOAF': 'http://xmlns.com/foaf/1.1/',
+    'DCTerms': 'http://purl.org/dc/terms/',
+    'CO': 'http://www.isi.edu/ikcap/Wingse/componentOntology.owl#',
+    'FO': 'http://www.isi.edu/ikcap/Wingse/fileOntology.owl#',
+    'CLP': 'http://cli-mate.lumc.nl/ontologies/clp#',
+    'xsd': 'http://www.w3.org/2001/XMLSchema#',
+    }
+
+surf.ns.register(**ns_dict)
 
 class Argument(db.EmbeddedDocument):
     name = db.StringField(required=True, max_length=50)
@@ -48,6 +59,32 @@ class Tool(db.Document):
 
     arguments = db.ListField(db.EmbeddedDocumentField('Argument'))
     requirements = db.ListField(db.EmbeddedDocumentField('ToolRequirement'))
+
+    def toRDF(self, format='turtle'):
+        base_url = 'http://cli-mate.lumc.nl/data/definitions/clp#'
+        store = surf.Store(reader='rdflib', writer='rdflib', rdflib_store='IOMemory')
+        session = surf.Session(store)
+
+        ComponentType = session.get_class(surf.ns.CLP['CommandLineProgramComponentType'])
+
+        component_type = ComponentType(base_url + self.name)
+        component_type.dcterms_label = self.name
+        component_type.dcterms_title = self.binary
+        component_type.dcterms_description = self.description
+        component_type.co_hasVersion = self.version
+        component_type.dcterms_comment = self.help
+        component_type.save()
+
+        session.commit()
+
+        graph = session.default_store.reader.graph
+        for prefix, url in ns_dict.items():
+            graph.bind(prefix.lower(), url)
+
+        return graph.serialize(format=format)
+
+
+
 
 ########################################################################################################################
 # database models with SQLAlchemy
