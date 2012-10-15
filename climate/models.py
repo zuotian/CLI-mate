@@ -3,18 +3,16 @@
 @author: Zuotian Tatum
 @contact: z.tatum@lumc.nl
 """
-
-from climate import db
+from datetime import datetime
+from climate import app, db
 import surf
 
 ns_dict = {
     'FOAF': 'http://xmlns.com/foaf/1.1/',
     'DCTerms': 'http://purl.org/dc/terms/',
-    'CO': 'http://www.isi.edu/ikcap/Wingse/componentOntology.owl#',
-    'FO': 'http://www.isi.edu/ikcap/Wingse/fileOntology.owl#',
     'CLP': 'http://cli-mate.lumc.nl/ontologies/clp#',
-    'xsd': 'http://www.w3.org/2001/XMLSchema#',
-    }
+    'xsd': 'http://www.w3.org/2001/XMLSchema#'
+}
 
 surf.ns.register(**ns_dict)
 
@@ -61,25 +59,76 @@ class Tool(db.Document):
     requirements = db.ListField(db.EmbeddedDocumentField('ToolRequirement'))
 
     def toRDF(self, format='turtle'):
-        base_url = 'http://cli-mate.lumc.nl/data/definitions/clp#'
+        base_url = 'http://cli-mate.lumc.nl/data/definitions/default/%s#' % self.name
         store = surf.Store(reader='rdflib', writer='rdflib', rdflib_store='IOMemory')
         session = surf.Session(store)
 
-        ComponentType = session.get_class(surf.ns.CLP['CommandLineProgramComponentType'])
+        CommandLineProgram = session.get_class(surf.ns.CLP.CommandLineProgram)
+        ExecutionRequirements = session.get_class(surf.ns.CLP.ExecutionRequirements)
+        Software = session.get_class(surf.ns.CLP.Software)
+        Argument = session.get_class(surf.ns.CLP.Argument)
 
-        component_type = ComponentType(base_url + self.name)
-        component_type.dcterms_label = self.name
-        component_type.dcterms_title = self.binary
-        component_type.dcterms_description = self.description
-        component_type.co_hasVersion = self.version
-        component_type.dcterms_comment = self.help
-        component_type.save()
+        # set up main node.
+        command_line_program = CommandLineProgram(base_url + self.name)
+        command_line_program.dcterms_label = self.name
+        command_line_program.dcterms_title = self.binary
+        command_line_program.dcterms_description = self.description
+        command_line_program.clp_hasVersion = self.version
+        command_line_program.dcterms_comment = self.help
+        command_line_program.save()
+
+        # set up execution requirements
+        execution_requirements = ExecutionRequirements(base_url + 'execution_requirements')
+        command_line_program.clp_hasExecutionRequirements = execution_requirements
+        execution_requirements.clp_requiresOperationSystem = surf.ns.CLP.Linux # TODO
+
+        if self.interpreter != '(binary)':
+            execution_requirements.clp_interpreter = surf.ns.CLP[self.interpreter]
+
+        if self.grid_access_type != '-':
+            execution_requirements.clp_gridAccessType = self.grid_access_type
+            execution_requirements.clp_gridID = self.grid_access_location
+
+        for req in self.requirements:
+            software = Software(base_url + req.name)
+            software.dcterms_tile = req.name
+            software.clp_gridID = req.location
+            software.clp_softwareType = req.type
+            execution_requirements.clp_requiresSoftware = software
+        execution_requirements.save()
+
+        # add arguments
+        argument_list = []
+        for arg in self.arguments:
+            argument = Argument(base_url + arg['name'])
+            argument_list.append(argument)
+
+            argument.clp_hasPrefix = arg['prefix']
+            argument.clp_type = arg['arg_type']
+            argument.save()
+        command_line_program.clp_hasArgument = argument_list
+
+        # add document metadata
+        Agent = session.get_class(surf.ns.FOAF['Agent'])
+        agent = Agent('http://climate.lumc.nl')
+        agent.dcterms_title = app.config['TITLE']
+        agent.dcterms_creator = app.config['AUTHOR']
+        agent.dcterms_hasVersion = app.config['VERSION']
+        agent.save()
+
+        Document = session.get_class(surf.ns.DCTERMS['Document'])
+        document = Document('')
+        document.dcterms_creator = agent
+        document.dcterms_created = datetime.utcnow()
+        document.rdfs_label = 'RDF definition of %s' % self.name
 
         session.commit()
 
+        # prepare for serialization
         graph = session.default_store.reader.graph
         for prefix, url in ns_dict.items():
             graph.bind(prefix.lower(), url)
+        graph.bind('', base_url)
 
         return graph.serialize(format=format)
 

@@ -124,6 +124,14 @@ var arg_row_manager = {
 		newRowInner.find('input.p_rank').val(position);
 		newRowInner.find('input.p_name').val(name);
 
+		// fix input/select ids.
+		newRowInner.find('input, select').each(function(){
+			$(this).attr({
+				id: 'arguments-' + position + '-' + $(this).attr('id'),
+				name: 'arguments-' + position + '-' + $(this).attr('name')
+			});
+		});
+
 		// setup dependency list based on existing arguments.
 		newRowInner.find('select.p_depending_argument').html(function() {
 			var options = '<option>None</option>';
@@ -241,6 +249,14 @@ var arg_row_manager = {
 		// new argument button.
 		$('button#addArg').click(function(){
 			argument_manager.addArg();
+			return false;
+		});
+
+		// ajax buttons.
+		$('button#showRDF').click(function(){
+			$.post('./show_rdf', $('form').serializeArray(), function(response){
+				$('div#ajaxResult').html(response);
+			});
 			return false;
 		});
 
