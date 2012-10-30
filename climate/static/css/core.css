@@ -1,0 +1,45 @@
+
+/*********************** content area ******************************/
+div.content textarea { width: 100%; font-size: 1em; }
+div.content .ui-state-error { padding: 5px; margin-top: 10px;}
+div.content .ui-state-highlight p { font-size: 0.9em; }
+div.content .ui-state-highlight .ui-icon { float: left; margin-right: .3em; }
+div.content .ui-accordion .ui-accordion-content { padding: 0.5em 1em; font-family:Trebuchet MS, sans-serif; }
+div.content .inner-content { padding-left: 1em; }
+div.content .left { float:left; width:35%; padding-right: 5%; }
+div.content .left input[type=text] { float:right;  width: 150px; }
+div.content .left select { float:right;  width: 158px; }
+div.content .right { float: left; width:55%; }
+div.content .right input[type=text] { width: 100%; }
+div.content .inner-content { overflow:auto; }
+div.content .full { float:left; width:100%; }
+div.content .full label { width: 112px; float: left; }
+div.content .inline-icon { display: inline-block; float: right}
+div.content .containers { overflow: auto; }
+div.content .container { height: 100px; border: solid #CDCECE;}
+div.content .ui-button .ui-button-text { display:inline; }
+div.content #tabs { margin-top: 1em; }
+div.content .half { float:left; width:45%; padding-right: 5%; }
+
+div.content #ajaxResult { overflow-x: auto; }
+
+/*********************** input file type ******************************/
+div.file-input { position: relative; margin: 1em 0;}
+div.fakefile { position: absolute; top: 0; left: 0; z-index: 1; }
+input.file { position: relative; text-align: right; -moz-opacity:0 ; filter:alpha(opacity: 0); opacity: 0; z-index: 2; }
+
+
+.ui-autocomplete {
+    max-height: 100px;
+    overflow-y: auto;
+    /* prevent horizontal scrollbar */
+    overflow-x: hidden;
+    /* add padding to account for vertical scrollbar */
+    padding-right: 20px;
+}
+
+
+.selectable .ui-selecting { background: #749090; }
+.selectable .ui-selected { background: #283339; color: white; }
+.selectable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
+.selectable li { margin: 3px; padding: 0.4em; height: 18px; width: 150px; }

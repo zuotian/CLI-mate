@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% from "_formhelpers.html" import render_field %}
+
+{% block title_extra %} - Log in {% endblock %}
+
+{% block head_extra %}
+    <style>
+        #login { width: 30%; margin: 0 auto; padding-top: 2em; }
+        #login input { width: 97%; }
+        #login input[type=submit] { width: 100%;}
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <form method="post" action="">
+        {{ form.csrf_token }}
+        <input type="hidden" name="next" value="{{ url_for('define') }}" />
+        <div id='login'>
+            <dl>
+                {{ render_field(form.username) }}
+                {{ render_field(form.password) }}
+            </dl>
+            <p>
+                Not a user yet? Click <a href="{{ url_for('register') }}">here</a> to register.
+            </p>
+            {{ form.log_in }}
+        </div>
+    </form>
+
+{% endblock %}

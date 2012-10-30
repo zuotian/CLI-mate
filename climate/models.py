@@ -4,6 +4,7 @@
 @contact: z.tatum@lumc.nl
 """
 from datetime import datetime
+from flask.ext.login import UserMixin
 from climate import app, db
 import surf
 
@@ -15,6 +16,15 @@ ns_dict = {
 }
 
 surf.ns.register(**ns_dict)
+
+
+class User(db.Document, UserMixin):
+    username = db.StringField(max_length=128, required=True)
+    password = db.StringField(max_length=128)
+    email = db.EmailField()
+    first_name = db.StringField(max_length=128)
+    last_name = db.StringField(max_length=128)
+
 
 class Argument(db.EmbeddedDocument):
     name = db.StringField(required=True, max_length=50)
@@ -40,13 +50,16 @@ class ToolRequirement(db.EmbeddedDocument):
     location = db.StringField(max_length=200)
 
 class Tool(db.Document):
+    # meta data
+    submitter = db.ReferenceField(User)
+    last_modified = db.DateTimeField()
+    is_public = db.BooleanField(default=False)
+
     name = db.StringField(required=True, max_length=50)
     binary = db.StringField(required=True, max_length=50)
     description = db.StringField(max_length=100)
-    owner = db.StringField(max_length=50)
-    owner = db.StringField(max_length=50)
+    author = db.StringField(max_length=50)
     email = db.EmailField()
-    version = db.StringField(max_length=50)
     version = db.StringField(max_length=50)
     help = db.StringField()
 
@@ -55,8 +68,8 @@ class Tool(db.Document):
     grid_access_type = db.StringField(choices=[(x, x) for x in ["-", "LFN", "URL"]])
     grid_access_location = db.StringField(max_length=250)
 
-    arguments = db.ListField(db.EmbeddedDocumentField('Argument'))
-    requirements = db.ListField(db.EmbeddedDocumentField('ToolRequirement'))
+    arguments = db.ListField(db.EmbeddedDocumentField(Argument))
+    requirements = db.ListField(db.EmbeddedDocumentField(ToolRequirement))
 
     def toRDF(self, format='turtle'):
         base_url = 'http://cli-mate.lumc.nl/data/definitions/default/%s#' % self.name
@@ -133,34 +146,9 @@ class Tool(db.Document):
         return graph.serialize(format=format)
 
 
-
-
-########################################################################################################################
-# database models with SQLAlchemy
-
-#from flask.ext.sqlalchemy import SQLAlchemy
-#db = SQLAlchemy(app)
-#
-#class User(db.Model):
-#    __tablename__ = 'users'
-#
-#    id = db.Column(db.Integer, primary_key=True)
-#    name = db.Column(db.String(60), nullable=False)
-#    password = db.Column(db.String(128))
-#    email = db.Column(db.String(60))
-#
-#    # tools = db.relationship('Tool', backref='user', lazy='dynamic')
-#
-#class ToolDefinition(db.Model):
-#    __tablename__ = 'tool_definitions'
-#
-#    id = db.Column(db.Integer, primary_key=True)
-#    name = db.Column(db.String(60), nullable=False)
-#    # created_by = db.Column(db.Integer, db.ForeignKey('user.id'))
-#    created = db.Column(db.DateTime)
-#
-#    def __init__(self, name):
-#        self.name = name
-#        created = datetime.utcnow()
-
-########################################################################################################################
+class Template(db.Document):
+    name = db.StringField(max_length=128, required=True)
+    platform = db.ListField(db.StringField())
+    path = db.StringField()
+    author = db.ReferenceField(User)
+    last_modified = db.DateTimeField()

@@ -8,17 +8,12 @@
 
 
 {% block content %}
-<form id="upload" method="POST" enctype="multipart/form-data" action='./upload-definition'>
+<form id="upload" method="POST" enctype="multipart/form-data" action='./upload'>
     {{ form.csrf_token }}
     <div class="file-input">
-        {{ upload_form.rdf(title=upload_form.rdf.description) }}
+        {{ form.rdf(title=form.rdf.description) }}
     </div>
-    {{ upload_form.submit }}
-    {% if formStatus == 'hide' %}
-        <div id="helpHeader">
-            <br/>OR <a href="#" id="showForm">Create a new one</a>.
-        </div>
-    {% endif %}
+    {{ form.submit }}
 </form>
 
 

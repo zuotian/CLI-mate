@@ -5,3 +5,5 @@
 """
 
 
+def parse_legacy_definition():
+    pass
