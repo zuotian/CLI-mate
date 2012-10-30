@@ -49,6 +49,18 @@ fieldset {
     border: 1px solid #999;
 }
 
+ul.errors, ul.messages {
+    list-style: none;
+    padding-left: 10px;
+    line-height: 25px;
+}
+
+ul.errors {
+    margin: 0;
+    background: #cd0a0a;
+    color: #ffffff;
+}
+
 /*********************** style classes ******************************/
 .hide { display: None; }
 .align-left { float: left; }

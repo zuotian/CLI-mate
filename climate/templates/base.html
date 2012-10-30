@@ -53,9 +53,17 @@
             <![endif]-->
             
             <div id="content" class="content">
-                {% if error -%}
-                    <div class="ui-state-error ui-corner-all">{{ error }}</div>
-                {%- endif %}
+                <div id="messages">
+                    {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            <ul class=flashes>
+                                {% for message in messages %}
+                                    <li class="ui-state-error ui-corner-all">{{ message }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    {% endwith %}
+                </div>
                 {% block content %}
                 {% endblock %}
             </div>
