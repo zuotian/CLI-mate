@@ -9,7 +9,7 @@ from pygments import highlight
 from pygments.formatters.html import HtmlFormatter
 
 from climate import app, login_manager
-from climate.forms import ToolForm, ToolUploadForm, ArgumentForm, LoginForm
+from climate.forms import ToolForm, ToolUploadForm, ArgumentForm, LoginForm, RegistrationForm
 from climate.models import Tool, Argument, User
 from climate.utils.sw_lexer import Notation3Lexer
 
@@ -31,30 +31,35 @@ def load_user(user_id):
 def index():
     return render_template('index.html')
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login/', methods=['GET', 'POST'])
 def login():
     form = LoginForm(csrf_enabled=True)
     if form.validate_on_submit():
-        user = User(**form.data)
-        if login_user(user):
-            flash("Logged in successfully.")
-        else:
-            flash("Wrong username or password. Please try again.")
-        return redirect(request.args.get('next') or url_for('index'))
-    else:
-        return render_template('auth/login.html', form=form)
+        try:
+            user = User.objects.get(username=form.data['username'], password=form.data['password'])
+            if login_user(user):
+                flash("Logged in successfully.")
+            return redirect(request.args.get('next') or url_for('index'))
+        except User.DoesNotExist:
+            form.errors['__all__'] = "Wrong username or password. Please try again."
+    return render_template('auth/login.html', form=form)
 
-@app.route('/logout')
+@app.route('/logout/')
 @login_required
 def logout():
     logout_user()
     return redirect(url_for('index'))
 
-@app.route('/register')
+@app.route('/register/', methods=['GET', 'POST'])
 def register():
-    pass
+    form = RegistrationForm(csrf_enabled=True)
+    if form.validate_on_submit():
+        user = User(**form.data)
+        user.save()
+        return redirect(request.args.get('next') or url_for('index'))
+    return render_template('auth/registration.html', form=form)
 
-@app.route('/define/upload', methods=['GET', 'POST'])
+@app.route('/define/upload/', methods=['GET', 'POST'])
 def define_upload():
     upload_form = ToolUploadForm()
     if upload_form.validate_on_submit():
@@ -67,28 +72,28 @@ def define_upload():
     else:
         return render_template('tool/upload.html', form=upload_form)
 
-@app.route('/define')
+@app.route('/define/')
 def define():
     return redirect(url_for('define_new'))
 
-@app.route('/define/new')
+@app.route('/define/new/')
 def define_new():
     # add a placeholder argument, so that arguments tab is not empty.
     tool = Tool(name='test', arguments=[Argument(name='Argument1')])
     form = ToolForm(csrf_enabled=True, obj=tool)
     return render_template('tool/define.html', form=form, empty_argument_form=ArgumentForm())
 
-@app.route('/define/show_rdf', methods=['POST'])
+@app.route('/define/show_rdf/', methods=['POST'])
 def show_rdf():
     form = ToolForm()
     tool = Tool(**form.data)
     rdf = tool.toRDF(format='turtle')
     return highlight(rdf, Notation3Lexer(), HtmlFormatter())
 
-@app.route('/generate')
+@app.route('/generate/')
 def generate():
     pass
 
-@app.route('/about')
+@app.route('/about/')
 def about():
     return render_template('about.html')

@@ -10,3 +10,22 @@
     {% endif %}
     </dd>
 {% endmacro %}
+
+{% macro form_error(form) %}
+    {% if form.errors['__all__'] %}
+        <ul class="errors ui-state-error">
+            <li>{{ form.errors['__all__'] }}</li>
+        </ul>
+    {% endif %}
+{% endmacro %}
+
+{% macro render_form_dl(form) %}
+    {{ form_error(form) }}
+    <dl>
+        {% for field in form %}
+            {% if not field.type in ['CSRFTokenField', 'SubmitField'] %}
+                {{ render_field(field) }}
+            {% endif %}
+        {% endfor %}
+    </dl>
+{% endmacro %}

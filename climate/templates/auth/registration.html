@@ -2,7 +2,7 @@
 
 {% from "_formhelpers.html" import render_form_dl %}
 
-{% block title_extra %} - Log in {% endblock %}
+{% block title_extra %} - Registration {% endblock %}
 
 {% block head_extra %}
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/auth.css') }}" />
@@ -15,10 +15,7 @@
         <input type="hidden" name="next" value="{{ url_for('define') }}" />
         <div class='centered-form'>
             {{ render_form_dl(form) }}
-            <p>
-                Not a user yet? Click <a href="{{ url_for('register') }}">here</a> to register.
-            </p>
-            {{ form.log_in }}
+            {{ form.register }}
         </div>
     </form>
 

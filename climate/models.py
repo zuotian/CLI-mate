@@ -20,10 +20,10 @@ surf.ns.register(**ns_dict)
 
 class User(db.Document, UserMixin):
     username = db.StringField(max_length=128, required=True)
-    password = db.StringField(max_length=128)
-    email = db.EmailField()
-    first_name = db.StringField(max_length=128)
-    last_name = db.StringField(max_length=128)
+    password = db.StringField(max_length=128, required=True)
+    email = db.EmailField(required=True)
+    first_name = db.StringField(max_length=128, required=True)
+    last_name = db.StringField(max_length=128, required=True)
 
 
 class Argument(db.EmbeddedDocument):
