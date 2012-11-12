@@ -5,7 +5,7 @@
 """
 from datetime import datetime
 from flask.ext.login import UserMixin
-from climate import app, db
+from climate import app, db, login_manager
 import surf
 
 ns_dict = {
@@ -17,6 +17,12 @@ ns_dict = {
 
 surf.ns.register(**ns_dict)
 
+
+@login_manager.user_loader
+def load_user(user_id):
+    if user_id != 'None':
+        return User.objects.get(id=user_id)
+    return None
 
 class User(db.Document, UserMixin):
     username = db.StringField(max_length=128, required=True)

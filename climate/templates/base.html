@@ -37,9 +37,9 @@
                             </li>
                         {%- endfor -%}
                         {% if not session.user_id %}
-                            <li><a href="{{ url_for('login') }}">Log in</a>&nbsp|&nbsp</li>
+                            <li><a href="{{ url_for('user.login') }}">Log in</a>&nbsp|&nbsp</li>
                         {% else %}
-                            <li><a href="{{ url_for('logout') }}">Log out</a>&nbsp|&nbsp</li>
+                            <li><a href="{{ url_for('user.logout') }}">Log out</a>&nbsp|&nbsp</li>
                             <li>Hello, {{ current_user.username }}!&nbsp</li>
                         {% endif %}
                     </ul>

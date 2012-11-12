@@ -7,7 +7,6 @@
 from flask import Flask
 from flask.ext.login import LoginManager
 from flask.ext.mongoengine import MongoEngine
-import os
 
 
 app = Flask(__name__)
@@ -20,4 +19,7 @@ db = MongoEngine(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-from . import views
+from climate import views
+from climate.user_views import user_blueprint
+
+app.register_blueprint(user_blueprint, url_prefix='/users')
