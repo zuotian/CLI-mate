@@ -38,6 +38,11 @@ p {
     padding: 3px;
 }
 
+label {
+    display: inline-block;
+    min-width: 100px;
+}
+
 form input, form select, form textarea {
     padding: 3px;
     color: #333333;

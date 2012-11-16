@@ -4,7 +4,7 @@
 @contact: z.tatum@lumc.nl
 """
 from datetime import datetime
-from flask.ext.login import UserMixin
+from flask.ext.security import RoleMixin, UserMixin, MongoEngineUserDatastore, Security
 from climate import app, db
 import surf
 
@@ -17,13 +17,25 @@ ns_dict = {
 
 surf.ns.register(**ns_dict)
 
+class Role(db.Document, RoleMixin):
+    name = db.StringField(required=True, unique=True, max_length=80)
+    description = db.StringField(max_length=255)
 
 class User(db.Document, UserMixin):
-    username = db.StringField(max_length=128, required=True)
-    password = db.StringField(max_length=128)
-    email = db.EmailField()
-    first_name = db.StringField(max_length=128)
-    last_name = db.StringField(max_length=128)
+    email = db.StringField(unique=True, max_length=255)
+    password = db.StringField(required=True, max_length=255)
+    last_login_at = db.DateTimeField()
+    current_login_at = db.DateTimeField()
+    last_login_ip = db.StringField(max_length=100)
+    current_login_ip = db.StringField(max_length=100)
+    login_count = db.IntField()
+    active = db.BooleanField(default=True)
+    confirmed_at = db.DateTimeField()
+    roles = db.ListField(db.ReferenceField(Role), default=[])
+
+# Setup Flask-Security
+user_datastore = MongoEngineUserDatastore(db, User, Role)
+security = Security(app, user_datastore)
 
 
 class Argument(db.EmbeddedDocument):
