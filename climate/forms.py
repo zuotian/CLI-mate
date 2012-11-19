@@ -5,16 +5,8 @@
 """
 
 from flask.ext.mongoengine.wtf import model_form
-from flask.ext.wtf import (Form, FileField, SubmitField, FieldList, FormField, PasswordField)
-from wtforms.validators import Required
-from climate.models import (Tool, Argument, ToolRequirement, User)
-
-
-
-LoginFormBase = model_form(User)
-class LoginForm(LoginFormBase):
-    password = PasswordField(validators=[Required()])
-    log_in = SubmitField()
+from flask.ext.wtf import (Form, FileField, SubmitField, FieldList, FormField)
+from climate.models import (Tool, Argument, ToolRequirement)
 
 
 ArgumentFormBase = model_form(Argument, field_args={

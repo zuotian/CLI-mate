@@ -1,12 +1,31 @@
 {% macro render_field(field) %}
-    <dt>{{ field.label }}
-    <dd>{{ field(class='ui-state-error' if field.errors else '')|safe }}
-    {% if field.errors %}
+    {% if field.type in ['CSRFTokenField', 'SubmitField', 'HiddenField'] %}
+        {{ field|safe }}
+    {% else %}
+        {{ field.label }}
+        {{ field(class='ui-state-error' if field.errors else '')|safe }}
+        {% if field.errors %}
+            <ul class="errors ui-state-error">
+                {% for error in field.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endif %}
+{% endmacro %}
+
+
+{% macro form_error(form) %}
+    {% if form.errors['__all__'] %}
         <ul class="errors ui-state-error">
-            {% for error in field.errors %}
-                <li>{{ error }}</li>
-            {% endfor %}
+            <li>{{ form.errors['__all__'] }}</li>
         </ul>
     {% endif %}
-    </dd>
+{% endmacro %}
+
+{% macro render_form(form) %}
+    {{ form_error(form) }}
+        {% for field in form %}
+            <p>{{ render_field(field) }}</p>
+        {% endfor %}
 {% endmacro %}
