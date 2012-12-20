@@ -253,10 +253,22 @@ var arg_row_manager = {
 		});
 
 		// ajax buttons.
-		$('button#showRDF').click(function(){
-			$.post('./show_rdf', $('form').serializeArray(), function(response){
-				$('div#ajaxResult').html(response);
-			});
+		$('button.ajaxSubmit').click(function(){
+			var action = $(this).val();
+			var data = $('form').serializeArray();
+			if (action == 'download') {
+				// build a new form and assign input values.
+				var newForm = $("<form action='/define/download' method='post'></form>");
+				for (var key in data) {
+					$("<input type='hidden' name='" + data[key].name + "'/>").val(data[key].value).appendTo(newForm);
+				}
+				//send request
+				newForm.appendTo('body').submit().remove();
+			} else {
+				$.post('/define/' + action, data, function(response){
+					$('div#ajaxResult').html(response);
+				});
+			}
 			return false;
 		});
 

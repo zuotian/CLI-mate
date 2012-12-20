@@ -55,6 +55,11 @@ class Argument(db.EmbeddedDocument):
     display = db.StringField(choices=[(x, x) for x in ["show", "hide", "show in advanced"]])
     min_occurrence = db.StringField(max_length=3)
     max_occurrence = db.StringField(max_length=50)
+    property_bag = db.StringField(max_length=50)
+
+    @property
+    def safe_name(self):
+        return self.name.replace(' ', '_')
 
 class ToolRequirement(db.EmbeddedDocument):
     type = db.StringField(choices=[(x, x) for x in ["binary", "python-module"]])
@@ -156,6 +161,21 @@ class Tool(db.Document):
         graph.bind('', base_url)
 
         return graph.serialize(format=format)
+
+    def toTarget(self, template):
+        now = datetime.isoformat(datetime.utcnow()) + "Z"
+        meta = {
+            'label': 'RDF definition of %s' % self.name,
+            'last_modified': self.last_modified if self.last_modified else now,
+            'version': "CLI-mate (version %0.1f)" % app.config['VERSION'],
+            'time': now
+        }
+
+        # pad meta data information for better display
+        for key in meta:
+            meta[key] = meta[key].ljust(75, ' ')
+
+        return template.render(data=self, meta=meta)
 
 
 class Template(db.Document):

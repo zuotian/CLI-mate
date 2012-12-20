@@ -37,8 +37,8 @@
                         <option>{{format}}</option>
                     {%- endfor %}
                 </select> format.
-                <button id="showRDF" class="ajaxSubmit" value="showRDF">Show</button>
-                <button id="downloadRDF" class="ajaxSubmit" value="downloadRDF">Download</button>
+                <button id="showRDF" class="ajaxSubmit" value="show">Show</button>
+                <button id="downloadRDF" class="ajaxSubmit" value="download">Download</button>
             </p>
             <p>Generate interface using template
                 <select id="template_name" name="template_name">
@@ -46,7 +46,7 @@
                         <option>{{template}}</option>
                     {%- endfor %}
                 </select>
-                <button id="genInterface" class="ajaxSubmit">Show</button>
+                <button id="genInterface" class="ajaxSubmit" value="generate">Show</button>
             </p>
             <div id="ajaxResult"></div>
         </div>

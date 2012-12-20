@@ -3,9 +3,15 @@
 @author: Zuotian Tatum
 @contact: z.tatum@lumc.nl
 """
-from flask import render_template, url_for, redirect
+from datetime import datetime
+from jinja2 import Template
+import os
+from flask import render_template, url_for, redirect, make_response, request
 from pygments import highlight
 from pygments.formatters.html import HtmlFormatter
+from pygments.lexers import guess_lexer_for_filename
+from pygments.lexers.agile import PythonLexer
+from pygments.util import ClassNotFound
 
 from climate import app
 from climate.forms import ToolForm, ToolUploadForm, ArgumentForm
@@ -47,12 +53,26 @@ def define_new():
     form = ToolForm(csrf_enabled=True, obj=tool)
     return render_template('tool/define.html', form=form, empty_argument_form=ArgumentForm())
 
-@app.route('/define/show_rdf', methods=['POST'])
-def show_rdf():
+@app.route('/define/<string:action>', methods=['POST'])
+def define_ajax(action):
     form = ToolForm()
     tool = Tool(**form.data)
-    rdf = tool.toRDF(format='turtle')
-    return highlight(rdf, Notation3Lexer(), HtmlFormatter())
+    if action == 'show':
+        return highlight(tool.toRDF(format='turtle'), Notation3Lexer(), HtmlFormatter())
+    elif action == 'download':
+        return make_response(tool.toRDF(format='turtle'), 200,
+                             [('Content-Type', 'rdf/ttl'), ('Content-disposition', 'attachment; filename=%s.ttl' % tool.name)])
+    elif action == 'generate':
+        target_file = open(os.path.join(app.config['TEMPLATE_DIR'], request.form['template_name']), 'r')
+        target = Template(target_file.read())
+        code = tool.toTarget(target)
+        try:
+            lexer = guess_lexer_for_filename(request.form['template_name'], code)
+        except ClassNotFound:
+            lexer = PythonLexer() # default
+        return highlight(code, lexer, HtmlFormatter())
+    else:
+        return make_response("Unknown action '%s'" % action, 401)
 
 @app.route('/generate')
 def generate():
