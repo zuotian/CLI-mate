@@ -3,6 +3,8 @@
 @author: Zuotian Tatum
 @contact: z.tatum@lumc.nl
 """
+
+
 from datetime import datetime
 from flask.ext.security import RoleMixin, UserMixin, MongoEngineUserDatastore, Security
 from climate import app, db
@@ -17,9 +19,11 @@ ns_dict = {
 
 surf.ns.register(**ns_dict)
 
+
 class Role(db.Document, RoleMixin):
     name = db.StringField(required=True, unique=True, max_length=80)
     description = db.StringField(max_length=255)
+
 
 class User(db.Document, UserMixin):
     email = db.StringField(unique=True, max_length=255)
@@ -37,20 +41,24 @@ class User(db.Document, UserMixin):
 user_datastore = MongoEngineUserDatastore(db, User, Role)
 security = Security(app, user_datastore)
 
+
 class Dependency(db.EmbeddedDocument):
     source = db.StringField(max_length=50, required=True)
-    source_condition = db.StringField(max_length=50, required=True, choices=[(x, x) for x in ["display", "format", "value"]])
+    source_condition = db.StringField(max_length=50, required=True,
+                                      choices=[(x, x) for x in ["display", "format", "value"]])
     target_scope = db.StringField(max_length=50, required=True)
     target_effect = db.StringField(max_length=150)
+
 
 class Argument(db.EmbeddedDocument):
     name = db.StringField(required=True, max_length=50)
     arg_type = db.StringField(required=True, max_length=50,
-                              choices=[(x, x) for x in ["None", "integer", "float", "string", "input", "output", "stdin", "stdout", "stderr"]])
+                              choices=[(x, x) for x in
+                                       ["None", "integer", 'float', "string", "input", "output", "stdin", "stdout", "stderr"]])
     prefix = db.StringField(max_length=2)
     prefix_long = db.StringField(max_length=50)
     value = db.StringField(max_length=50)
-    format = db.StringField(max_length=50)
+    file_format = db.StringField(max_length=50)
     rank = db.IntField()
 
     choices = db.StringField(max_length=50)
@@ -87,10 +95,12 @@ class Argument(db.EmbeddedDocument):
     def fromRDF(self, node):
         pass
 
+
 class ToolRequirement(db.EmbeddedDocument):
-    type = db.StringField(choices=[(x, x) for x in ["binary", "python-module"]])
+    req_type = db.StringField(choices=[(x, x) for x in ["binary", "python-module"]])
     name = db.StringField(max_length=50),
     location = db.StringField(max_length=200)
+
 
 class Tool(db.Document):
     # meta data
@@ -104,7 +114,7 @@ class Tool(db.Document):
     author = db.StringField(max_length=50)
     email = db.EmailField()
     version = db.StringField(max_length=50)
-    help = db.StringField()
+    help_text = db.StringField()
 
     os = db.StringField(choices=[(x, x) for x in ["Linux"]])
     interpreter = db.StringField(choices=[(x, x) for x in ["(binary)", "bash", "python", "perl", "java"]])
@@ -114,7 +124,7 @@ class Tool(db.Document):
     arguments = db.ListField(db.EmbeddedDocumentField(Argument))
     requirements = db.ListField(db.EmbeddedDocumentField(ToolRequirement))
 
-    def toRDF(self, format='turtle'):
+    def toRDF(self, rdf_format='turtle'):
         base_url = 'http://cli-mate.lumc.nl/data/definitions/default/%s#' % self.name
         store = surf.Store(reader='rdflib', writer='rdflib', rdflib_store='IOMemory')
         session = surf.Session(store)
@@ -131,13 +141,13 @@ class Tool(db.Document):
         command_line_program.dcterms_title = self.binary
         command_line_program.dcterms_description = self.description
         command_line_program.clp_hasVersion = self.version
-        command_line_program.dcterms_comment = self.help
+        command_line_program.dcterms_comment = self.help_text
         command_line_program.save()
 
         # set up execution requirements
         execution_requirements = CLPExecutionRequirements(base_url + 'execution_requirements')
         command_line_program.clp_hasExecutionRequirements = execution_requirements
-        execution_requirements.clp_requiresOperationSystem = surf.ns.CLP.Linux # TODO
+        execution_requirements.clp_requiresOperationSystem = surf.ns.CLP.Linux  # TODO
 
         if self.interpreter != '(binary)':
             execution_requirements.clp_interpreter = surf.ns.CLP[self.interpreter]
@@ -185,7 +195,7 @@ class Tool(db.Document):
             graph.bind(prefix.lower(), url)
         graph.bind('', base_url)
 
-        return graph.serialize(format=format)
+        return graph.serialize(format=rdf_format)
 
     def toTarget(self, template):
         now = datetime.isoformat(datetime.utcnow()) + "Z"

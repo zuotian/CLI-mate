@@ -4,19 +4,6 @@
 @contact: z.tatum@lumc.nl
 """
 
-
-#!/usr/bin/python
-"""
-Use a tool definition and a template to compile an interface.
-
-@organization: Leiden University Medical Center (LUMC)
-@author: Zuotian Tatum
-@contact: z.tatum@lumc.nl
-@license: GPLv2 or later
-
-@requires: rdflib (version > 3.0)
-"""
-
 import json
 from datetime import datetime
 
@@ -40,6 +27,7 @@ Process = Namespace('http://www.daml.org/services/owl-s/1.1/Process.owl#')
 
 def _e(string):
     return string.replace(' ', '_')
+
 
 class DefinitionDesigner():
     """
@@ -77,6 +65,7 @@ class DefinitionDesigner():
             }]
         }
     """
+
     def __init__(self):
         self.graph = Graph()
         self.configGraph = None
@@ -120,7 +109,6 @@ class DefinitionDesigner():
                 os.append(Literal(item))
         elif o != '':
             self.graph.add((s, p, Literal(o)))
-
     #def _addTriple
 
     def _dictToGraph(self, data):
@@ -286,10 +274,10 @@ class DefinitionDesigner():
         dependencies = []
         for d in self.graph.subjects(CLP['hasDependentItem'], node):
             dependencies.append({
-                'depending_parameter' : self._parseObjectStr(d, CLP['hasDependingItem']),
-                'depending_condition' : self._parseObjectStr(d, CLP['dependingCondition']),
-                'dependent_scope' : self._parseObjectStr(d, CLP['dependentScope']),
-                'dependent_effect' : self._parseObjectStr(d, CLP['effect'])
+                'depending_parameter': self._parseObjectStr(d, CLP['hasDependingItem']),
+                'depending_condition': self._parseObjectStr(d, CLP['dependingCondition']),
+                'dependent_scope': self._parseObjectStr(d, CLP['dependentScope']),
+                'dependent_effect': self._parseObjectStr(d, CLP['effect'])
             })
         return dependencies
     #def _parseDependencies
@@ -300,9 +288,9 @@ class DefinitionDesigner():
         else:
             content = handle
 
-        if content[0] == '@':       #turtle
+        if content[0] == '@':       # turtle
             self.graph.parse(data=content, format='n3')
-        elif content[0] == '<':     #xml
+        elif content[0] == '<':     # xml
             self.graph.parse(data=content)
     #def _parseFile
 
@@ -347,7 +335,7 @@ class DefinitionDesigner():
                 elif p['type'] == 'select':
                     p['type'] = 'string'
                 elif p['type'] == 'boolean':
-                    p['type'] == 'None'
+                    p['type'] = 'None'
 
                 # move argument with long form into arg_long
                 if p['arg'].startswith('--'):
@@ -360,7 +348,6 @@ class DefinitionDesigner():
                         p['property_bag'][key] = [value, 'no']
 
             return data
-
 
         data = {'message': ''}
 
@@ -380,7 +367,7 @@ class DefinitionDesigner():
         data['property_bag'] = self._parseStatements(t_node)
 
         r_node = self._parseType(Component['ExecutionRequirements']).next()
-        data['os'] = 'Linux' #TODO
+        data['os'] = 'Linux' # TODO
         data['interpreter'] = self._parseObjectStr(r_node, Component['requiresSoftware']) or '(binary)'
         data['grid_access_type'] = self._parseObjectStr(r_node, CLP['gridAccessType'])
         data['grid_access_location'] = self._parseObjectStr(r_node, Component['gridID'])
@@ -396,9 +383,9 @@ class DefinitionDesigner():
         if s_nodes:
             for s_node in s_nodes:
                 data['requirements'].append({
-                    'req_name' : self._parseObjectStr(s_node, DCTerms['title']),
-                    'req_location' : self._parseObjectStr(s_node, CLP['gridID']),
-                    'req_type' : self._parseObjectStr(s_node, CLP['softwareType'])
+                    'req_name': self._parseObjectStr(s_node, DCTerms['title']),
+                    'req_location': self._parseObjectStr(s_node, CLP['gridID']),
+                    'req_type': self._parseObjectStr(s_node, CLP['softwareType'])
                 })
 
         input_list = Collection(self.graph, self.graph.value(t_node, Component['hasInputs']))
@@ -408,19 +395,19 @@ class DefinitionDesigner():
         data['parameters'] = []
         for p_node in argument_list:
             parameter = {
-                'name' : self._parseObjectStr(p_node, DCTerms['title']),
-                'description' : self._parseObjectStr(p_node, DCTerms['description']),
-                'label' : self._parseObjectStr(p_node, RDFS.label),
-                'arg' : self._parseObjectStr(p_node, Component['hasPrefix']),
-                'arg_long' : self._parseObjectStr(p_node, CLP['hasAlternativePrefix']),
-                'rank' : self._parseObjectStr(p_node, CLP['order']),
-                'display' : self._parseObjectStr(p_node, CLP['display']),
-                'min_occurrence' : self._parseObjectStr(p_node, CLP['minOccurrence']),
-                'max_occurrence' : self._parseObjectStr(p_node, CLP['maxOccurrence']),
-                'property_bag' : self._parseStatements(p_node),
-                'dependencies' : self._parseDependencies(p_node),
-                'choices' : '',
-                'value' : ''
+                'name': self._parseObjectStr(p_node, DCTerms['title']),
+                'description': self._parseObjectStr(p_node, DCTerms['description']),
+                'label': self._parseObjectStr(p_node, RDFS.label),
+                'arg': self._parseObjectStr(p_node, Component['hasPrefix']),
+                'arg_long': self._parseObjectStr(p_node, CLP['hasAlternativePrefix']),
+                'rank': self._parseObjectStr(p_node, CLP['order']),
+                'display': self._parseObjectStr(p_node, CLP['display']),
+                'min_occurrence': self._parseObjectStr(p_node, CLP['minOccurrence']),
+                'max_occurrence': self._parseObjectStr(p_node, CLP['maxOccurrence']),
+                'property_bag': self._parseStatements(p_node),
+                'dependencies': self._parseDependencies(p_node),
+                'choices': '',
+                'value': ''
             }
 
             arg_node = self.graph.value(p_node, Component['hasArgument'])
@@ -538,10 +525,10 @@ class DefinitionDesigner():
             dependencies = []
             for d in graph.subjects(CLI['dependent_parameter'], node):
                 dependencies.append({
-                    'depending_parameter' : getObjectStr(d, CLI['depending_parameter']),
-                    'depending_condition' : getObjectStr(d, CLI['depending_condition']),
-                    'dependent_scope' : getObjectStr(d, CLI['dependent_scope']),
-                    'dependent_effect' : getObjectStr(d, CLI['dependent_effect'])
+                    'depending_parameter': getObjectStr(d, CLI['depending_parameter']),
+                    'depending_condition': getObjectStr(d, CLI['depending_condition']),
+                    'dependent_scope': getObjectStr(d, CLI['dependent_scope']),
+                    'dependent_effect': getObjectStr(d, CLI['dependent_effect'])
                 })
             return dependencies
         #getDependencies
@@ -568,22 +555,22 @@ class DefinitionDesigner():
         data['parameters'] = []
         for p in graph.objects(i_node, Process['hasParameter']):
             data['parameters'].append({
-                "type" : getObjectStr(p, Process['parameterType']),
-                'name' : getObjectStr(p, DCTerms['title']),
-                'arg' : getObjectStr(p, CLI['argument']),
-                'arg_long' : getObjectStr(p, CLI['argument_alternative']),
-                'value' : getObjectStr(p, Process['parameterValue']),
-                'label' : getObjectStr(p, RDFS.label),
-                'description' : getObjectStr(p, DCTerms['description']),
-                'rank' : getObjectStr(p, CLI['order']),
-                'format' : getObjectStr(p, DCTerms['format']),
-                'display' : getObjectStr(p, CLI['display']),
-                'repeatable' : getObjectStr(p, CLI['repeatable']),
-                'required' : getObjectStr(p, CLI['required']),
-                'property_bag' : getPropertyBag(p),
-                'dependencies' : getDependencies(p)
+                "type": getObjectStr(p, Process['parameterType']),
+                'name': getObjectStr(p, DCTerms['title']),
+                'arg': getObjectStr(p, CLI['argument']),
+                'arg_long': getObjectStr(p, CLI['argument_alternative']),
+                'value': getObjectStr(p, Process['parameterValue']),
+                'label': getObjectStr(p, RDFS.label),
+                'description': getObjectStr(p, DCTerms['description']),
+                'rank': getObjectStr(p, CLI['order']),
+                'format': getObjectStr(p, DCTerms['format']),
+                'display': getObjectStr(p, CLI['display']),
+                'repeatable': getObjectStr(p, CLI['repeatable']),
+                'required': getObjectStr(p, CLI['required']),
+                'property_bag': getPropertyBag(p),
+                'dependencies': getDependencies(p)
             })
-            #endfor
+        #endfor
 
         # sort parameter base on its partial order / rank
         data['parameters'].sort(key=lambda n: n['rank'])

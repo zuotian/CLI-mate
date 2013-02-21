@@ -22,27 +22,31 @@ ArgumentFormBase = model_form(Argument, field_args={
     'max_occurrence': {'description': "1 (use ? for unlimited)"}
 })
 
+
 class ArgumentForm(ArgumentFormBase):
     field_set = {
-        'left' : ('arg_type', 'name', 'prefix', 'prefix_long', 'value', 'format', 'rank'),
+        'left': ('arg_type', 'name', 'prefix', 'prefix_long', 'value', 'file_format', 'rank'),
         'right': ('choices', 'label', 'description'),
         'advanced': ('display', 'min_occurrence', 'max_occurrence')
     }
 
+
 ToolRequirementForm = model_form(ToolRequirement, field_args={
-    'type': {'label': "Requirement type"},
+    'req_type': {'label': "Requirement type"},
     'name': {'label': "Requirement name"},
     'location': {'label': "LFN location"},
     'os': {'label': "OS"}
 })
 
+
 ToolFormBase = model_form(Tool, exclude=('arguments', 'requirements'), field_args={
     'name': {'label': "Name *"},
     'binary': {'label': "Command *"},
     'email': {'label': "Owner Email"},
-    'help': {'label': "Enter the help manual below."},
+    'help_text': {'label': "Enter the help manual below."},
     'grid_access_type': {'label': "GRID access"}
 })
+
 
 class ToolForm(ToolFormBase):
 
@@ -53,6 +57,7 @@ class ToolForm(ToolFormBase):
         'general': ('name', 'binary', 'description', 'owner', 'email', 'version', 'help'),
         'runtime': ('os', 'interpreter', 'grid_access_type', 'grid_access_location')
     }
+
 
 class ToolUploadForm(Form):
     rdf = FileField(description="Load a RDF definition")
