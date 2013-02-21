@@ -37,6 +37,11 @@ class User(db.Document, UserMixin):
 user_datastore = MongoEngineUserDatastore(db, User, Role)
 security = Security(app, user_datastore)
 
+class Dependency(db.EmbeddedDocument):
+    source = db.StringField(max_length=50, required=True)
+    source_condition = db.StringField(max_length=50, required=True, choices=[(x, x) for x in ["display", "format", "value"]])
+    target_scope = db.StringField(max_length=50, required=True)
+    target_effect = db.StringField(max_length=150)
 
 class Argument(db.EmbeddedDocument):
     name = db.StringField(required=True, max_length=50)
@@ -60,6 +65,27 @@ class Argument(db.EmbeddedDocument):
     @property
     def safe_name(self):
         return self.name.replace(' ', '_')
+
+    dependencies = db.ListField(db.EmbeddedDocumentField(Dependency))
+
+    def toRDF(self, node):
+        """
+        serialize an argument in RDF triples.
+        """
+        node.dcterms_title = self.name
+        if self.arg_type != "None":
+            node.clp_type = surf.ns.CLP[self.arg_type]
+        node.clp_hasPrefix = self.prefix
+        node.clp_hasLongPrefix = self.prefix_long
+        node.clp_value = self.value
+        node.clp_format = self.format
+        node.rank = self.rank
+        node.dcterms_label = self.label
+        node.dcterms_description = self.description
+        node.save()
+
+    def fromRDF(self, node):
+        pass
 
 class ToolRequirement(db.EmbeddedDocument):
     type = db.StringField(choices=[(x, x) for x in ["binary", "python-module"]])
@@ -93,13 +119,14 @@ class Tool(db.Document):
         store = surf.Store(reader='rdflib', writer='rdflib', rdflib_store='IOMemory')
         session = surf.Session(store)
 
-        CommandLineProgram = session.get_class(surf.ns.CLP.CommandLineProgram)
-        ExecutionRequirements = session.get_class(surf.ns.CLP.ExecutionRequirements)
-        Software = session.get_class(surf.ns.CLP.Software)
-        Argument = session.get_class(surf.ns.CLP.Argument)
+        # set up RDF classes.
+        CLPCommandLineProgram = session.get_class(surf.ns.CLP.CommandLineProgram)
+        CLPExecutionRequirements = session.get_class(surf.ns.CLP.ExecutionRequirements)
+        CLPSoftware = session.get_class(surf.ns.CLP.Software)
+        CLPArgument = session.get_class(surf.ns.CLP.Argument)
 
         # set up main node.
-        command_line_program = CommandLineProgram(base_url + self.name)
+        command_line_program = CLPCommandLineProgram(base_url + self.name)
         command_line_program.dcterms_label = self.name
         command_line_program.dcterms_title = self.binary
         command_line_program.dcterms_description = self.description
@@ -108,7 +135,7 @@ class Tool(db.Document):
         command_line_program.save()
 
         # set up execution requirements
-        execution_requirements = ExecutionRequirements(base_url + 'execution_requirements')
+        execution_requirements = CLPExecutionRequirements(base_url + 'execution_requirements')
         command_line_program.clp_hasExecutionRequirements = execution_requirements
         execution_requirements.clp_requiresOperationSystem = surf.ns.CLP.Linux # TODO
 
@@ -120,7 +147,7 @@ class Tool(db.Document):
             execution_requirements.clp_gridID = self.grid_access_location
 
         for req in self.requirements:
-            software = Software(base_url + req.name)
+            software = CLPSoftware(base_url + req.name)
             software.dcterms_tile = req.name
             software.clp_gridID = req.location
             software.clp_softwareType = req.type
@@ -130,12 +157,10 @@ class Tool(db.Document):
         # add arguments
         argument_list = []
         for arg in self.arguments:
-            argument = Argument(base_url + arg['name'])
-            argument_list.append(argument)
-
-            argument.clp_hasPrefix = arg['prefix']
-            argument.clp_type = arg['arg_type']
-            argument.save()
+            argument = Argument(**arg)
+            argument_node = CLPArgument(base_url + arg['name'])
+            argument.toRDF(argument_node)
+            argument_list.append(argument_node)
         command_line_program.clp_hasArgument = argument_list
 
         # add document metadata
