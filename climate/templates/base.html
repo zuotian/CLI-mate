@@ -29,18 +29,18 @@
         <div class="page">
             <div class="header">
                 <div id="menu">
+                    <div id="menu-greeting">{% if session.user_id %}Hello, {{ current_user.email }}{% endif %}</div>
                     <ul>
                         {%- for menu_item in menu -%}
                             <li>
-                                <a href="{{url_for(menu_item[1])}}"
-                                   {{ 'class="current"' if current_page == menu_item[1] }}>{{menu_item[0]}}</a>&nbsp|&nbsp
+                                <a href="{{url_for(menu_item[1])}}"{{ 'class="current"' if current_page == menu_item[1] }}>{{menu_item[0]}}</a>
+                                {% if not loop.first %}&nbsp|&nbsp {% endif %}
                             </li>
                         {%- endfor -%}
                         {% if not session.user_id %}
                             <li><a href="{{ url_for_security('login') }}">Log in</a>&nbsp|&nbsp</li>
                         {% else %}
                             <li><a href="{{ url_for_security('logout') }}">Log out</a>&nbsp|&nbsp</li>
-                            <li>Hello, {{ current_user.email }}!&nbsp</li>
                         {% endif %}
                     </ul>
                 </div>

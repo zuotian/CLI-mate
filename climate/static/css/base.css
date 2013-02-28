@@ -90,7 +90,7 @@ h1 { font-size: 3em; }
 div.header .ui-widget-header { padding: 10px 0 0 10px; }
 
 /*********************** menu area *******************************/
-#menu { position: absolute; display:block; float:right; width: 98%; }
+#menu { position: absolute; display:block; float:right; width: 60%; padding-left: 40%; text-align: right;}
 #menu ul { display:block; list-style: none; float: right }
 #menu ul li { display:block; float:right; color: #7E9797 }
 #menu ul li a { display: block; float: left; text-decoration: none; color: #7E9797; }
