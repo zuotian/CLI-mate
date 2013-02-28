@@ -102,29 +102,38 @@ class ToolRequirement(db.EmbeddedDocument):
     location = db.StringField(max_length=200)
 
 
+class CommandLineInterface(db.EmbeddedDocument):
+    command = db.StringField(required=True, max_length=50)
+    interpreter = db.StringField(choices=[(x, x) for x in ["(binary)", "bash", "java", "perl", "python", "ruby"]])
+
+    arguments = db.ListField(db.EmbeddedDocumentField(Argument))
+
+
 class Tool(db.Document):
-    # meta data
+    # meta data for house keeping
     submitter = db.ReferenceField(User)
     last_modified = db.DateTimeField()
     is_public = db.BooleanField(default=False)
 
     name = db.StringField(required=True, max_length=50)
-    binary = db.StringField(required=True, max_length=50)
     description = db.StringField(max_length=100)
     author = db.StringField(max_length=50)
     email = db.EmailField()
     version = db.StringField(max_length=50)
     help_text = db.StringField()
 
-    os = db.StringField(choices=[(x, x) for x in ["Linux"]])
-    interpreter = db.StringField(choices=[(x, x) for x in ["(binary)", "bash", "python", "perl", "java"]])
-    grid_access_type = db.StringField(choices=[(x, x) for x in ["-", "LFN", "URL"]])
-    grid_access_location = db.StringField(max_length=250)
+    os = db.StringField(choices=[(x, x) for x in ["Linux", "Windows", "MaxOS"]])
+    grid_access_type = db.StringField(choices=[(x, x) for x in ["-", "LFN", "URL"]])  # TODO: where should this go?
+    grid_access_location = db.StringField(max_length=250)  # TODO: where should this go?
 
-    arguments = db.ListField(db.EmbeddedDocumentField(Argument))
     requirements = db.ListField(db.EmbeddedDocumentField(ToolRequirement))
 
+    command_line_interface = db.EmbeddedDocumentField(CommandLineInterface)
+
     def toRDF(self, rdf_format='turtle'):
+        """
+        TODO: The model is not stable yet. This method may not work.
+        """
         base_url = 'http://cli-mate.lumc.nl/data/definitions/default/%s#' % self.name
         store = surf.Store(reader='rdflib', writer='rdflib', rdflib_store='IOMemory')
         session = surf.Session(store)

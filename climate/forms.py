@@ -6,12 +6,12 @@
 
 from flask.ext.mongoengine.wtf import model_form
 from flask.ext.wtf import (Form, FileField, SubmitField, FieldList, FormField)
-from climate.models import (Tool, Argument, ToolRequirement)
+from climate.models import (Tool, Argument, ToolRequirement, CommandLineInterface)
 
 
 ArgumentFormBase = model_form(Argument, field_args={
     'arg_type': {'label': 'Type'},
-    'name': {'label' : 'Name *'},
+    'name': {'label': 'Name *'},
     'prefix': {'label': "Prefix (short)"},
     'prefix_long': {'label': "Prefix (long)"},
     'value': {'label': "Default value"},
@@ -48,14 +48,27 @@ ToolFormBase = model_form(Tool, exclude=('arguments', 'requirements'), field_arg
 })
 
 
-class ToolForm(ToolFormBase):
+CommandLineInterfaceFormBase = model_form(CommandLineInterface, field_args={
+    'command': {'label': "Command *"}
+})
 
-    requirements = FieldList(FormField(ToolRequirementForm))
+
+class CommandLineInterfaceForm(CommandLineInterfaceFormBase):
     arguments = FieldList(FormField(ArgumentForm))
 
     field_set = {
-        'general': ('name', 'binary', 'description', 'owner', 'email', 'version', 'help'),
-        'runtime': ('os', 'interpreter', 'grid_access_type', 'grid_access_location')
+        'general': ('command', 'interpreter')
+    }
+
+
+class ToolForm(ToolFormBase):
+
+    requirements = FieldList(FormField(ToolRequirementForm))
+    command_line_interface = FormField(CommandLineInterfaceForm)
+
+    field_set = {
+        'general': ('name', 'description', 'owner', 'email', 'version', 'help'),
+        'runtime': ('os', 'grid_access_type', 'grid_access_location')
     }
 
 

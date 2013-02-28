@@ -54,7 +54,7 @@ def define():
 @app.route('/define/new')
 def define_new():
     # add a placeholder argument, so that arguments tab is not empty.
-    tool = Tool(name='test', arguments=[Argument(name='Argument1')])
+    tool = Tool(name='test', command_line_interface={'arguments': [Argument(name='Argument1')]})
     form = ToolForm(csrf_enabled=True, obj=tool)
     return render_template('tool/define.html', form=form, empty_argument_form=ArgumentForm())
 

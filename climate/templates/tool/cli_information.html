@@ -1,12 +1,16 @@
-<div id="argument-info" class="inner-content">
+<div id="cli-info" class="inner-content">
     <div class="ui-widget ui-state-highlight ui-corner-all">
         <p><span class="ui-icon ui-icon-info"></span>
             Argument name cannot contain <strong>white space</strong> and following characters: <strong>- . ( ) , ; $</strong>
         </p>
     </div>
     <p></p>
+    {% for field_name in form.command_line_interface.field_set['general'] -%}
+        <p>{{ form.command_line_interface[field_name].label }}{{ form.command_line_interface[field_name] }}</p>
+    {%- endfor %}
+
     <div id="arguments">
-        {% for a_form in form.arguments  %}
+        {% for a_form in form.command_line_interface.arguments  %}
             {% set id = loop.index %}
             {% include 'tool/argument_row.html' %}
         {% endfor %}
